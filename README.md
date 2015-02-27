@@ -64,6 +64,8 @@ They are ciphered, and only the token has the key to decipher them.
 Used material :
 
 - The Token : Bluetooth 4.0 (Bluetooth Low Energy or BLE) enabled device, powered by an atmega32u4 (arduino), like this one : [Blend Micro](http://redbearlab.com/blendmicro)
+
+
 ![Blend Micro](http://static1.squarespace.com/static/5039e08be4b00cf0e8cf88cd/t/5369db8fe4b0968802ea163d/1399446417765/BlendMicro.F%26B.jpg?format=200w)
 
 - A bluetooth 4.0 compatible phone (like iPhone >= 4s)
