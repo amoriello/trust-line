@@ -43,7 +43,7 @@ The security is "almost" the same when you type your password by yourself. Almos
 
 - Password are ciphered using an AES128 key (CBC operation mode)
 - Entropy : The token uses the [Entropy Library](https://sites.google.com/site/astudyofentropy/project-definition/timer-jitter-entropy-sources/entropy-library)
-- The communication protocol (over BLE) use a HMAC-SHA256 based challenge (64bit random nonce)/response to authenticate the sender and to ensure that there is no replay in the air. So yes, there is another 128bit AES key, and this one is shared during pairing, and saved inside the Iphone App
+- The communication protocol (over BLE) uses a HMAC-SHA256 based challenge (64bit random nonce)/response to authenticate the sender and to ensure that there is no replay in the air. So yes, there is another 128bit AES key, and this one is shared during pairing, and saved inside the Iphone App
 - The lockbits are useful to reduce the risk of a physical access to the Token (they are not set...yet)
 - During pairing, the token keys are sent to the Iphone in clear-text. This could be better, but it appends only once. You can do it inside a faraday cage if you are the absolute paranoid type of person.
 
