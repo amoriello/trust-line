@@ -47,7 +47,7 @@ The security is "almost" the same when you type your password by yourselt. Almos
 - The lockbits are useful to reduce the risk of a physical access to the Token (they are not set...yet)
 - During pairing, the token keys are sent to the Iphone in clear-text. This could be better, but it appends only once. You can do it inside a faraday cage if you are the absolute paranoid type of person.
 
-#### What if I loose my token?
+### What if I loose my token?
 - It's OK, you can create a new one, and recover your passwords:
 
 When you pair the token with your phone for the first time, the secrets keys of the Token are sent to the phone.
@@ -55,7 +55,7 @@ The phone ciphers them with a strong generated AES key, (let's call it the Recov
 The application will ask you to print this secret Recovery Key (as a QR code), and put it in a safe somewhere...safe.
 
 
-#### What if I loose my phone?
+### What if I loose my phone?
 - It's OK, your ciphered passwords can be safely stored on any Cloud, synchronized accros your devices, or simply backuped by mail.
 They are ciphered, and only the token has the key to decipher them.
  
