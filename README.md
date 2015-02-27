@@ -35,7 +35,7 @@ The token looks like a USB keyboard to your computer. It can send keystrokes lik
 
 
 ###What about security?
-The security is "almost" the same when you type your password by yourselt. Almost, because:
+The security is "almost" the same when you type your password by yourself. Almost, because:
 - You don't have to remember the passwords, so they can be unique for every service, strong, and changed easily.
 
 
