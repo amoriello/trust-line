@@ -52,7 +52,4 @@ uint8_t CipherPassword(const Password& pass, const SymKey& sym_key, uint8_t* p_d
 uint8_t DecipherPassword(const uint8_t* p_data, const SymKey& sym_key, Password* p_pass);
 
 
-extern AES* g_p_aes;
-
-
 #endif  // SRC_TOKEN_PASSWORD_H_
