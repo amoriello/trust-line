@@ -47,7 +47,7 @@ The security is "almost" the same when you type your password by yourself. Almos
 - The lockbits are useful to reduce the risk of a physical access to the Token (they are not set...yet)
 - During pairing, the token keys are sent to the Iphone in clear-text (to understand why, report to the _**What if I lose my Token**_ section). This could be better, but it appends only once. You can do it inside a [faraday cage](http://www.instructables.com/id/Faraday-Cage-Phone-Pouch/) if you are the absolute paranoid type of person ;).
 - The phone does not store the secret key used to decrypt password.
-- The phone has 2 keys : the one used to authenticate the challenge/response, and another one, for later purpose: one on the next objective is to be able to use the token in a pocket, powered by a battery (that will be charged we the Token is pluged-in), to access passwords anywhere, by printing them temporarily on the phone itself - or clipboard -).
+- The phone has 2 keys : the one used to authenticate the challenge/response, and another one, for later purpose: one off the next objective is to be able to use the token in a pocket, powered by a battery (that will be charged we the Token is pluged-in), to access passwords anywhere, by printing them temporarily on the phone itself - or clipboard -).
 - So yes, there are 3 keys : 
   - 1 to cipher the password, stored inside the Token EEPROM
   - 1 to authenticate the sender of a command using a HMAC-SHA256 based challenge/response, stored either on the phone and the Token
