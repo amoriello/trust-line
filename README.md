@@ -79,6 +79,11 @@ Used material :
 
 - A bluetooth 4.0 compatible phone (like iPhone >= 4s)
 
+### Where is the iPhone App?
+Work in progress, but I'm a total newbie in GUI design, so I'm open to any contribution.
+
+The iPhone app will also be OpenSource, and I will find a way to prove that the binary signed version on the Appstore matches the sources.
+
 ### What about this solution vs other closed-source solution?
 I don't know anything about any other solution (in general), and I don't care.
 I designed and made this one because I won't trust anyone else solution to manage my passwords.
