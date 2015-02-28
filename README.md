@@ -56,7 +56,7 @@ The application will ask you to print this secret Recovery Key (as a QR code), a
 
 
 ### What if I lose my phone?
-- It's OK, your encrypted passwords can be safely stored on any Cloud, synchronized accros your devices, or simply backuped by mail.
+- It's OK, your encrypted passwords can be safely stored on any Cloud, synchronized across your devices, or simply backuped by mail.
 They are encrypted, and only the token has the key to decrypt them.
  
 
