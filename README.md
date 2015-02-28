@@ -50,7 +50,7 @@ The security is "almost" the same when you type your password by yourself. Almos
 - The phone has 2 keys : the one used to authenticate the challenge/response, and another one, for later purpose: one off the next objective is to be able to use the token in a pocket, powered by a battery (that will be charged when the Token is pluged-in), to access passwords anywhere, by printing them temporarily on the phone itself - or clipboard -).
 - So yes, there are 3 keys : 
   - 1 to cipher the password, stored inside the Token EEPROM
-  - 1 to authenticate the sender of a command using a HMAC-SHA256 based challenge/response, stored either on the phone and the Token
+  - 1 to authenticate the sender of a command using a HMAC-SHA256 based challenge/response, stored in the phone and in the Token
   - 1 to securely send back to the phone a password decrypted by the token, to print it on screen temporarily, or to put it inside the clipboard for a paste operation (ex : you want to authenticate when browsing with your phone). This one is stored on the phone and the Token.
 
 ### What if I lose my token?
