@@ -15,19 +15,19 @@ Use different strong passwords for every service and:
 ##### Anywhere you type a password on your keyboard, this solution fit.
 
 ### Project :
-A "Token" device that generates secure passwords and cipher them using a 128 bits AES key. The secret key is stored in the token's eeprom memory only.
+A "Token" device that generates secure passwords and encrypt them using a 128 bits AES key. The secret key is stored in the token's eeprom memory only.
 
-The generated ciphered password is sent to a Master Device (let's say : an Iphone) to be stored (the token device does not store the generated password, nor the ciphered version).
+The generated encrypted password is sent to a Master Device (let's say : an Iphone) to be stored (the token device does not store the generated password, nor the encrypted version).
 
 - The token knows a secret AES128 symmetric key
-- The Iphone knows a bunch of ciphered passwords that cannot be deciphered without the token
+- The Iphone knows a bunch of ciphered passwords that cannot be decrypted without the token
 
 ### How to use this?
 When you want to login somewhere, instead of typing a password:
 
 - Plug the Token to the computer (USB)
 - Run the Iphone App (work in progress) and select the account's service you try to log-in (ex: workstation/gmail/facebook/amazon...)
-- The Iphone App sends the associated ciphered password to the token, that can decipher it (because it knows the secret key) and the token "types" the password where your focus is.
+- The Iphone App sends the associated encrypted password to the Token, that can decrypt it (because it knows the secret key) and the token "types" the password where your focus is.
 
 
 ### How does it work?
@@ -41,23 +41,23 @@ The security is "almost" the same when you type your password by yourself. Almos
 
 ### What about security (details)?
 
-- Password are ciphered using an AES128 key (CBC operation mode)
+- Password are encrypted using an AES128 key (CBC operation mode)
 - Entropy : The token uses the [Entropy Library](https://sites.google.com/site/astudyofentropy/project-definition/timer-jitter-entropy-sources/entropy-library)
 - The communication protocol (over BLE) uses a HMAC-SHA256 based challenge (64bit random nonce)/response to authenticate the sender and to ensure that there is no replay in the air. So yes, there is another 128bit AES key, and this one is shared during pairing, and saved inside the Iphone App
 - The lockbits are useful to reduce the risk of a physical access to the Token (they are not set...yet)
 - During pairing, the token keys are sent to the Iphone in clear-text. This could be better, but it appends only once. You can do it inside a faraday cage if you are the absolute paranoid type of person.
 
-### What if I loose my token?
+### What if I lose my token?
 - It's OK, you can create a new one, and recover your passwords:
 
 When you pair the token with your phone for the first time, the secrets keys of the Token are sent to the phone.
-The phone ciphers them with a strong generated AES key, (let's call it the Recovery Key, it's generated, but you can override it using your own passphrase that will be derivated (PBKDF2) to generate the Recovery Key).
+The phone encrypt them with a strong generated AES key, (let's call it the Recovery Key, it's generated for simplicity, but you can override it using your own passphrase that will be derivated (PBKDF2) to generate the Recovery Key).
 The application will ask you to print this secret Recovery Key (as a QR code), and put it in a safe somewhere...safe.
 
 
-### What if I loose my phone?
-- It's OK, your ciphered passwords can be safely stored on any Cloud, synchronized accros your devices, or simply backuped by mail.
-They are ciphered, and only the token has the key to decipher them.
+### What if I lose my phone?
+- It's OK, your encrypted passwords can be safely stored on any Cloud, synchronized accros your devices, or simply backuped by mail.
+They are encrypted, and only the token has the key to decrypt them.
  
 
 ### What do I need?
