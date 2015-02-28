@@ -17,7 +17,7 @@ Use different strong passwords for every service and:
 ### Project :
 A "Token" device that generates secure passwords and encrypt them using a 128 bits AES key. The secret key is stored in the token's eeprom memory only.
 
-The generated encrypted password is sent to a Master Device (let's say : an Iphone) to be stored (the token device does not store the generated password, nor the encrypted version).
+The generated encrypted password is sent to a Master Device (let's say : an iPhone) to be stored (the token device does not store the generated password, nor the encrypted version).
 
 - The token knows a secret AES128 symmetric key
 - The Iphone knows a bunch of ciphered passwords that cannot be decrypted without the token
