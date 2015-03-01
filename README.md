@@ -85,5 +85,12 @@ Work in progress, but I'm a total newbie in GUI design, so I'm open to any contr
 The iPhone app will also be OpenSource, and I will find a way to prove that the binary signed version on the Appstore matches the sources.
 
 ### What about this solution vs other closed-source solution?
-I don't know anything about any other solution (in general), and I may reinvent the wheel.
+I don't know much about any other solution (in general), and I may reinvent the wheel.
+Solutions I know about always require to install a software on the machine where you want to "autologin". This type of solution doesn't fit my personal requirements (ex: bios password or fully encrypted computer startup). This was easy to implement (a week of nights) and it was fun :
+- it's very cool to make something blink and interact with "physical" world (I'm not used to microcontroller programming, in fact, this is my second Arduino project)
+- That would be my first iPhone App
+- Apple's Swift looks cool
+- The blend micro looks cool
+- I would love to share it and find someone who think this is cool, too
+
 Anyway, this project is a way to play with arduino stuff and geek during my free time, and I wanted to share it.
