@@ -85,7 +85,5 @@ Work in progress, but I'm a total newbie in GUI design, so I'm open to any contr
 The iPhone app will also be OpenSource, and I will find a way to prove that the binary signed version on the Appstore matches the sources.
 
 ### What about this solution vs other closed-source solution?
-I don't know anything about any other solution (in general), and I don't care.
-I designed and made this one because I won't trust anyone else solution to manage my passwords.
-
-This project is also a way to play with arduino stuff and geek during my free time.
+I don't know anything about any other solution (in general), and I may reinvent the wheel.
+Anyway, this project is a way to play with arduino stuff and geek during my free time, and I wanted to share it.
