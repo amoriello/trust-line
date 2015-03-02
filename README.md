@@ -75,6 +75,7 @@ If this happens, then the security rely mostly on the strength of the mechanism 
 If you think this scenario may occurs, then you should use a phone identification mechanism that is hard to reproduce if someone is looking, or to guess if someone know you.
 Ex : use digital fingerprint identification when available.
 
+Anyway, thanks to your Recovery Key (see above), you will be able to use your passwords's backup to retreive all your passwords.
 
 ### What do I need?
 Used material :
