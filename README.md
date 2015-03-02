@@ -94,6 +94,10 @@ Work in progress, but I'm a total newbie in GUI design, so I'm open to any contr
 
 The iPhone app will also be OpenSource, and I will find a way to prove that the binary signed version on the Appstore matches the sources.
 
+### How to build/test?
+Refer to the [wiki](https://github.com/amoriello/trust-line/wiki) section.
+
+
 ### What about this solution vs other closed-source solution?
 I don't know much about any other solution (in general), and I may reinvent the wheel.
 Solutions I know about always require to install a software on the machine where you want to "autologin". This type of solution doesn't fit my personal requirements (ex: bios password or fully encrypted computer startup). Also, this was fun to design and make:
