@@ -94,9 +94,12 @@ The iPhone app will also be OpenSource, and I will find a way to prove that the 
 
 ### What about this solution vs other closed-source solution?
 I don't know much about any other solution (in general), and I may reinvent the wheel.
-Solutions I know about always require to install a software on the machine where you want to "autologin". This type of solution doesn't fit my personal requirements (ex: bios password or fully encrypted computer startup). Also, This was fun :
+Solutions I know about always require to install a software on the machine where you want to "autologin". This type of solution doesn't fit my personal requirements (ex: bios password or fully encrypted computer startup). Also, This was fun to design and make:
+- to me, this password stuff is an everyday problem
+- the cryptographic challenge behind this problem is cool
 - it's very cool to make something blink and interact with "physical" world (I'm not used to microcontroller programming, in fact, this is my second Arduino project)
 - That would be my first iPhone App
+- Bluetooth 4.0 looks cool
 - Apple's Swift looks cool
 - The blend micro looks cool
 - I would love to share it and find someone who think this is cool, too
