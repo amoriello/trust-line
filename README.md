@@ -51,7 +51,7 @@ The security is "almost" the same when you type your password by yourself. Almos
 - So yes, there are 3 keys : 
   - 1 to cipher the password, stored inside the Token EEPROM
   - 1 to authenticate the sender of a command using a HMAC-SHA256 based challenge/response, stored in the phone and in the Token
-  - 1 to securely send back to the phone a password decrypted by the token, to print it on screen temporarily, or to put it inside the clipboard for a paste operation (ex : you want to authenticate when browsing with your phone). This one is stored in the phone and in the Token.
+  - 1 to securely send back to the phone a password decrypted by the token, to temporarily print it on screen, or to put it inside the clipboard for a paste operation (ex : you want to authenticate when browsing with your phone). This one is stored both in the phone and in the Token.
 
 ### What if I lose my token?
 - It's OK, you can create a new one, and recover your passwords:
