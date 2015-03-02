@@ -68,6 +68,13 @@ The Recovery Key rules them all, so keep it safe.
 - It's OK, your encrypted passwords can be safely stored on any Cloud, synchronized across your devices, or simply backuped by mail.
 They are encrypted, and only the token has the key to decrypt them.
  
+### What if I lose both my phone and the token
+- That's the worst case scenario.
+
+If this happens, then the security rely mostly on the strength of the mechanism you use to unlock your phone.
+If you think this scenario may occurs, then you should use a phone identification mechanism that is hard to reproduce if someone is looking, or to guess if someone know you.
+Ex : use digital footprint identification when available.
+
 
 ### What do I need?
 Used material :
