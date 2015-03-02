@@ -98,10 +98,10 @@ Solutions I know about always require to install a software on the machine where
 - to me, this password stuff is an everyday problem
 - the cryptographic challenge behind this problem is cool
 - it's very cool to make something blink and interact with "physical" world (I'm not used to microcontroller programming, in fact, this is my second Arduino project)
-- That would be my first iPhone App
+- that would be my first iPhone App
 - Bluetooth 4.0 looks cool
 - Apple's Swift looks cool
-- The blend micro looks cool
+- the blend micro looks cool
 - I would love to share it and find someone who think this is cool, too
 
 Anyway, this project is a way to play with arduino stuff and geek during my free time, and I wanted to share it.
