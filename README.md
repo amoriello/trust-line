@@ -104,4 +104,7 @@ Solutions I know about always require to install a software on the machine where
 - the blend micro looks cool
 - I would love to share it and find someone who think this is cool, too
 
-Anyway, this project is a way to play with arduino stuff and geek during my free time, and I wanted to share it.
+--------------------------------
+### Contributing
+
+Contributions or suggestions are welcome. Do not hesitate to fill issues, send pull requests, or discuss by email at amoriello.hutti@gmail.com.
