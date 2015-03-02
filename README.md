@@ -41,7 +41,7 @@ The security is "almost" the same when you type your password by yourself. Almos
 
 ### What about security (details)?
 
-- Passwords are encrypted using an AES128 key (CBC operation mode), stored inside token eeprom memory
+- Passwords are encrypted using an AES128 key (CBC operation mode), stored inside token eeprom memory.
 - Entropy : the token uses the [Entropy Library](https://sites.google.com/site/astudyofentropy/project-definition/timer-jitter-entropy-sources/entropy-library)
 - The communication protocol (over BLE) uses a HMAC-SHA256 based challenge (64bit random nonce)/response to authenticate the sender and to ensure that there is no replay in the air. So yes, there is another secret key, and it is also 128 bit long. This one is shared during pairing, and saved inside the iPhone App
 - The lockbits will be useful to reduce the risk of a physical access to the Token (ex : external read/write token flash/eeprom memory). They are not set, yet.
