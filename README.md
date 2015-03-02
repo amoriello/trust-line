@@ -17,21 +17,21 @@ Use different strong passwords for every service and:
 ### Project :
 A "Token" device that generates secure passwords and encrypt them using a 128 bits AES key. The secret key is stored in the token's eeprom memory only.
 
-The generated encrypted password is sent to a Master Device (let's say : an iPhone) to be stored (the token device does not store the generated password, nor the encrypted version).
+The generated encrypted password is sent to a Master Device (let's say : an iPhone) to be stored (the token does not store the generated password, nor the encrypted version).
 
-- The token knows a secret AES128 symmetric key
-- The Iphone knows a bunch of ciphered passwords that cannot be decrypted without the token
+- The token knows a secret AES128 symmetric key to encrypt/decrypt passwords.
+- The Iphone knows a bunch of ciphered passwords that cannot be decrypted without the token.
 
 ### How to use this?
 When you want to login somewhere, instead of typing a password:
 
 - Plug the Token to the computer (USB)
-- Run the Iphone App (work in progress) and select the account's service you try to log-in (ex: workstation/gmail/facebook/amazon...)
-- The Iphone App sends the associated encrypted password to the Token, that can decrypt it (because it knows the secret key) and the token "types" the password where your focus is.
+- Run the iPhone App (work in progress) and select the account's service you try to log-in (ex: workstation/gmail/facebook/amazon...)
+- The iPhone App sends the associated encrypted password to the Token, that can decrypt it (because it knows the secret key) and the Token "types" the password where your focus is.
 
 
 ### How does it work?
-The token looks like a USB keyboard to your computer. It can send keystrokes like a human will do on its own keyboard.
+The Token looks like a USB keyboard to your computer. It can send keystrokes like a human will do on its own keyboard.
 
 
 ###What about security?
@@ -61,6 +61,8 @@ The phone encrypt them with a generated AES key. Let's call it the Recovery Key.
 The application will ask you to print this secret Recovery Key (as a QR code), and put it in a safe somewhere...safe.
 
 So yes, there are 4 keys (and that's the last, I promise).
+
+- The token security rely on electronic. Lock-bits will be activated to protect it's memory against external read/write. It would also be fun to imagine a secure enclosure, that breaks if someone tries to open it, so that you know that someone attempted something.
 
 The Recovery Key rules them all, so keep it safe.
 
