@@ -20,7 +20,7 @@ A "Token" device that generates secure passwords and encrypt them using a 128 bi
 The generated encrypted password is sent to a Master Device (let's say : an iPhone) to be stored (the token does not store the generated password, nor the encrypted version).
 
 - The token knows a secret AES128 symmetric key to encrypt/decrypt passwords.
-- The Iphone knows a bunch of ciphered passwords that cannot be decrypted without the token.
+- The iPhone knows a bunch of ciphered passwords that cannot be decrypted without the token.
 
 ### How to use this?
 When you want to login somewhere, instead of typing a password:
