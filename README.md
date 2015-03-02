@@ -4,7 +4,7 @@
 Use different strong passwords for every service and:
 
 - you don't need to remember them
-- you don't need a software to be installed on the machine where you want to authenticate, so you can use it everywhere (home/work...)
+- you don't need a software to be installed on the machine where you normally type your password, so you can use it everywhere (home/work...)
 - you can use it for BIOS password
 - you can use it with any fully encrypted computer startup mechanism that requires a password
 - you don't need the service provider to make any change to its password authentication mechanism (works with facebook, google...)
