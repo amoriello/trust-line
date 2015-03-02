@@ -73,7 +73,7 @@ They are encrypted, and only the token has the key to decrypt them.
 
 If this happens, then the security rely mostly on the strength of the mechanism you use to unlock your phone.
 If you think this scenario may occurs, then you should use a phone identification mechanism that is hard to reproduce if someone is looking, or to guess if someone know you.
-Ex : use digital footprint identification when available.
+Ex : use digital fingerprint identification when available.
 
 
 ### What do I need?
