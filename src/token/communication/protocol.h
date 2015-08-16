@@ -41,7 +41,8 @@ private:
   enum max_burst_size {
     //!
     // Because communication channel's stack size is limited :
-    // Long data (> stack size) is truncated into kMaxBurst
+    // Long data (> stack size) is sent truncated into kMaxBurst
+    // buffers and ack
     //
     // PROTOCOL DESC:
     // Sending long buffers :
