@@ -7,6 +7,7 @@
 
 #include <token/token.h>
 #include <token/password.h>
+#include <token/crypto.h>
 #include <token/communication/channel.h>
 #include <token/log.h>
 
@@ -14,12 +15,13 @@
 CmdProcessor g_cmd_registrer[cmdid::kNbCmd];
 
 
+
 void Pair(const Command& cmd) {
   Response resp;
 
   g_token.Pair();
 
-  TLOG("Pair");
+  TLOG2("Pair");
 
   const SymKey& pass_key = g_token.PassKey();
   const SymKey& cr_key = g_token.CRKey();
@@ -39,11 +41,26 @@ void Pair(const Command& cmd) {
 }
 
 
+void CreateChallenge(const Command& cmd) {
+  Response resp;
+
+  TLOG2("Challenge");
+
+  resp.hdr.id = respid::kOk;
+  resp.hdr.arg_size = sizeof(Challenge);
+
+  Challenge* p_challenge = (Challenge*)(&resp.arg);
+  CreateChallenge(p_challenge);
+
+  g_chan.WriteResponse(resp);
+}
+
+
 void CreatePassword(const Command& cmd) {
   Response resp;
   Password pass;
 
-  TLOG("CreatePassword");
+  TLOG2("CreatePassword");
 
   uint8_t size = cmd.arg[0];
   if (size > Password::kMaxSize) {
@@ -68,22 +85,85 @@ void CreatePassword(const Command& cmd) {
 void TypePassword(const Command& cmd) {
   Response resp;
 
-  TLOG("TypePassword");
+  TLOG2("TypePassword");
 
-  if (cmd.hdr.arg_size != 80) {
+  if (cmd.hdr.arg_size < 80 || cmd.hdr.arg_size > 85) {
+    TLOG2("No Way");
+    TLOG2(cmd.hdr.arg_size, DEC);
     resp.hdr.id = respid::kInvalidArgument;
     resp.hdr.arg_size = 0;
-    g_chan.WriteResponse(resp);    
+    g_chan.WriteResponse(resp);
+    return;    
   }
 
   DecipherPassword(cmd.arg, g_token.PassKey(), (Password*)&resp.arg);
 
   char* p_password = (char*)&resp.arg[1];
-  g_log.println(p_password);
+  TLOG2(p_password);
 
 #ifndef TEST_NO_KEYBOARD
   Keyboard.print(p_password);
 #endif  // TEST_NO_KEYBOARD
+  TLOG("ArgSize:");
+  TLOG(cmd.hdr.arg_size, DEC);
+  uint8_t nbAdditionnalKeyPress = cmd.hdr.arg_size - 80;
+  for (uint8_t i = 0; i < nbAdditionnalKeyPress; ++i) {
+    TLOG2("More keys");
+    TLOG2(cmd.arg[80 + i], HEX);
+    #ifndef TEST_NO_KEYBOARD
+    Keyboard.press(cmd.arg[80 + i]);
+    Keyboard.releaseAll();
+    #endif  // TEST_NO_KEYBOARD
+  }
+
+  resp.hdr.id = respid::kOk;
+  resp.hdr.arg_size = 0;
+  g_chan.WriteResponse(resp);
+}
+
+
+void LockComputer(const Command& cmd) {
+  Response resp;
+
+  Keyboard.press(KEY_LEFT_GUI);
+  Keyboard.release('l');
+
+  resp.hdr.id = respid::kOk;
+  resp.hdr.arg_size = 0;
+  g_chan.WriteResponse(resp);
+}
+
+
+void TypeString(const Command& cmd) {
+  Response resp;
+
+  if (cmd.hdr.arg_size >= 100) {
+    resp.hdr.id = respid::kInvalidArgument;
+    resp.hdr.arg_size = 0;
+    g_chan.WriteResponse(resp);
+    return; 
+  }
+
+  char* string = (char*)cmd.arg;
+
+  //length will contains string length + 1
+  uint8_t length = 0;
+  while (string[length++]);
+
+  // Special characters
+  if (cmd.hdr.arg_size > length) {
+    uint8_t nbAdditionnalKeyPress = cmd.hdr.arg_size - length;
+    uint8_t beginKeyIndex = cmd.hdr.arg_size - nbAdditionnalKeyPress;
+    for (uint8_t i = 0; i < nbAdditionnalKeyPress; ++i) {
+      #ifndef TEST_NO_KEYBOARD
+      Keyboard.press(cmd.arg[beginKeyIndex + i]);
+      Keyboard.releaseAll();
+      #endif  // TEST_NO_KEYBOARD
+    }
+  }
+
+
+  Keyboard.print(string);
 
   resp.hdr.id = respid::kOk;
   resp.hdr.arg_size = 0;
@@ -94,7 +174,7 @@ void TypePassword(const Command& cmd) {
 void ReturnPassword(const Command& cmd) {
   Response resp;
   Password pass;
-  TLOG("ReturnPassword");
+  TLOG2("ReturnPassword");
 
   if (cmd.hdr.arg_size != 80) {
     resp.hdr.id = respid::kInvalidArgument;
@@ -114,14 +194,29 @@ void ReturnPassword(const Command& cmd) {
 }
 
 
+void Reset(const Command& cmd) {
+  Response resp;
+
+  g_token.Reset();
+
+  resp.hdr.id = respid::kOk;
+  resp.hdr.arg_size = 0;
+
+  g_chan.WriteResponse(resp);
+}
 
 namespace /* anonymous */ {
 
 void RegistrerCommands() {
   g_cmd_registrer[cmdid::kPair] = &Pair;
+  g_cmd_registrer[cmdid::kCreateChallenge] = &CreateChallenge;
+  g_cmd_registrer[cmdid::kReset] = &Reset;  
+
   g_cmd_registrer[cmdid::kCreatePassword] = &CreatePassword;
   g_cmd_registrer[cmdid::kTypePassword] = &TypePassword;
   g_cmd_registrer[cmdid::kReturnPassword] = &ReturnPassword;
+  g_cmd_registrer[cmdid::kLockComputer] = &LockComputer;
+  g_cmd_registrer[cmdid::kTypeString] = &TypeString;
   g_cmd_registrer[cmdid::kNbCmd] = 0;  // kNbCmd == nb registrered cmd
 }
 

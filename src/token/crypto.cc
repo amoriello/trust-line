@@ -11,6 +11,10 @@
 #include <token/log.h>
 
 
+//  The current challenge.
+//  Next Command's response MUST reslove this challenge
+Challenge g_current_challenge;
+
 namespace {
 
 void _ComputeValidSecToken(const Command& cmd, const Challenge& challenge,
@@ -136,19 +140,25 @@ void FillWithRandom(uint8_t* p_data, uint16_t data_size, const Range& range) {
 }
 
 
-
 void CreateChallenge(Challenge* p_challenge) {
   uint8_t max_rand_value = 255;
   // fill key data with random values between 0 and 255;
   FillWithRandom(p_challenge->nonce, sizeof(p_challenge->nonce), max_rand_value);
+
+  // The generated challenge is now the current challenge for next command.
+  memcpy(&g_current_challenge, p_challenge, sizeof(Challenge));
 }
 
 
-
-bool IsValidSecurityToken(const Command& cmd, const Challenge& challenge, const SymKey& cr_key) {
+bool IsValidSecurityToken(const Command& cmd, const SymKey& cr_key) {
   uint8_t valid_response[HASH_LENGTH];
 
-  _ComputeValidSecToken(cmd, challenge, cr_key, valid_response);
+  _ComputeValidSecToken(cmd, g_current_challenge, cr_key, valid_response);
+
+  //TLOG("Token:");
+  TLOG2((char*)g_current_challenge.nonce, 5, HEX);
+  //TLOG("Valid:");
+  TLOG2((char*)valid_response, 5, HEX);
 
   for (uint8_t i = 0; i < HASH_LENGTH; ++i) {
     if (cmd.sec_token[i] != valid_response[i]) {

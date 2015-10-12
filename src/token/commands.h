@@ -56,7 +56,6 @@ struct Response {
 typedef void (*CmdProcessor)(const Command& cmd);
 
 
-
 namespace respid {
 enum ResponseType {
   kOk,
@@ -75,10 +74,14 @@ enum ResponseType {
 namespace cmdid {               // Need to be authenticated?
 enum CommandId {                //
   kPair,                        // No
+  kCreateChallenge,             // No
+
+  kReset,                       // Yes
   kCreatePassword,              // Yes
   kTypePassword,                // Yes
   kReturnPassword,              // Yes
-  kReset,                       // Yes
+  kLockComputer,                // Yes
+  kTypeString,
 
   //// TESTONLY ////
   kTestEcho,
@@ -94,6 +97,15 @@ enum CommandId {                //
 }  // namespace cmdid
 
 
+inline bool IsNoAuthCommand(const Command& cmd) {
+  return cmd.hdr.id <= cmdid::kCreateChallenge;
+}
+
+inline bool IsTesting(const Command& cmd) {
+  using cmdid::kTestEcho;
+  using cmdid::kNbCmd;
+  return cmd.hdr.id >= kTestEcho && cmd.hdr.id < kNbCmd;
+}
 
 /*!
  * Callback map that associates a CommandId the corresponding action

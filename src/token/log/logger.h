@@ -20,6 +20,7 @@ class BasicLogger {
   void println(const char* msg) { sink_.println(msg); }
   void print(int val, int fmt) { sink_.print(val, fmt); }
   void println(int val, int fmt) { sink_.println(val, fmt); }
+  void println(const char* p_data, unsigned int size, int fmt) { sink_.println(p_data, size, fmt); }
 
  private:
   Sink sink_;

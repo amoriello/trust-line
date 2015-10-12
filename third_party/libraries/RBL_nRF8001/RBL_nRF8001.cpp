@@ -278,7 +278,7 @@ static void process_events()
 
             case ACI_EVT_CONNECTED:
                 is_connected = 1;
-                Serial.println(F("Evt Connected"));
+                //Serial.println(F("Evt Connected"));
                 timing_change_done = false;
                 aci_state.data_credit_available = aci_state.data_credit_total;
                 /*Get the device version of the nRF8001 and store it in the Hardware Revision String*/
@@ -286,7 +286,7 @@ static void process_events()
                 break;
 
             case ACI_EVT_PIPE_STATUS:
-                Serial.println(F("Evt Pipe Status"));
+                //Serial.println(F("Evt Pipe Status"));
                 if (lib_aci_is_pipe_available(&aci_state, PIPE_UART_OVER_BTLE_UART_TX_TX) && (false == timing_change_done))
                 {
                     lib_aci_change_timing_GAP_PPCP(); // change the timing on the link as specified in the nRFgo studio -> nRF8001 conf. -> GAP.
@@ -308,8 +308,8 @@ static void process_events()
                 break;
 
             case ACI_EVT_DATA_RECEIVED:
-                Serial.print(F("Pipe Number: "));
-                Serial.println(aci_evt->params.data_received.rx_data.pipe_number, DEC);
+                //Serial.print(F("Pipe Number: "));
+                //Serial.println(aci_evt->params.data_received.rx_data.pipe_number, DEC);
                 for(int i=0; i<aci_evt->len - 2; i++)
                 {
                     if(rx_buffer_len == MAX_RX_BUFF)
@@ -331,9 +331,9 @@ static void process_events()
 
             case ACI_EVT_DATA_CREDIT:
                 aci_state.data_credit_available = aci_state.data_credit_available + aci_evt->params.data_credit.credit;
-                Serial.print("ACI_EVT_DATA_CREDIT     ");
-                Serial.print("Data Credit available: ");
-                Serial.println(aci_state.data_credit_available,DEC);
+                //Serial.print("ACI_EVT_DATA_CREDIT     ");
+                //Serial.print("Data Credit available: ");
+                //Serial.println(aci_state.data_credit_available,DEC);
                 ack=1;
                 break;
 
@@ -351,8 +351,8 @@ static void process_events()
                 {
                     aci_state.data_credit_available++;
                 }
-                Serial.print("Data Credit available: ");
-                Serial.println(aci_state.data_credit_available,DEC);
+                //Serial.print("Data Credit available: ");
+                //Serial.println(aci_state.data_credit_available,DEC);
                 break;
 
             case ACI_EVT_HW_ERROR:
@@ -405,9 +405,9 @@ void ble_do_events()
             {
                 if(true == lib_aci_send_data(PIPE_UART_OVER_BTLE_UART_TX_TX, &tx_buff[Index], 20))
                 {
-                    Serial.print("data transmmit success!  Length: ");
-                    Serial.print(20, DEC);
-                    Serial.print("    ");
+                    //Serial.print("data transmmit success!  Length: ");
+                    //Serial.print(20, DEC);
+                    //Serial.print("    ");
                 }
                 else
                 {
@@ -416,8 +416,8 @@ void ble_do_events()
                 tx_buffer_len -= 20;
                 Index += 20;
                 aci_state.data_credit_available--;
-                Serial.print("Data Credit available: ");
-                Serial.println(aci_state.data_credit_available,DEC);
+                //Serial.print("Data Credit available: ");
+                //Serial.println(aci_state.data_credit_available,DEC);
                 ack = 0;
                 while (!ack)
                     process_events();
@@ -425,9 +425,9 @@ void ble_do_events()
 
             if(true == lib_aci_send_data(PIPE_UART_OVER_BTLE_UART_TX_TX,& tx_buff[Index], tx_buffer_len))
             {
-                Serial.print("data transmmit success!  Length: ");
-                Serial.print(tx_buffer_len, DEC);
-                Serial.print("    ");
+                //Serial.print("data transmmit success!  Length: ");
+                //Serial.print(tx_buffer_len, DEC);
+                //Serial.print("    ");
             }
             else
             {
@@ -435,8 +435,8 @@ void ble_do_events()
             }
             tx_buffer_len = 0;
             aci_state.data_credit_available--;
-            Serial.print("Data Credit available: ");
-            Serial.println(aci_state.data_credit_available,DEC);
+            //Serial.print("Data Credit available: ");
+            //Serial.println(aci_state.data_credit_available,DEC);
             ack = 0;
             while (!ack)
                 process_events();

@@ -1,7 +1,7 @@
 #  Author Amoriello Hutti - 2015
 
 set(Token_BOARD blendmicro8)
-set(Token_PORT /dev/tty.usbmodem14211)
+set(Token_PORT /dev/tty.usbmodem14131)
 add_definitions(-DTEST_RESET_ON_START)
 
 

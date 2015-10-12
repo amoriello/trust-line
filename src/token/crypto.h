@@ -82,7 +82,7 @@ private:
 
 void CreateChallenge(Challenge* p_challenge);
 
-bool IsValidSecurityToken(const Command& cmd, const Challenge& challenge, const SymKey& cr_key);
+bool IsValidSecurityToken(const Command& cmd, const SymKey& cr_key);
 
 void FillWithRandom(uint8_t* p_data, uint16_t data_size, const Range& range);
 

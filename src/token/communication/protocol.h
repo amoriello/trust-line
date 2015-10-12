@@ -31,13 +31,12 @@ class TokenProtocol {
   *
   * [out] p_cmd : the command sent by the associated master device
   * [out] p_resp : a response to send in case of error @todo: think about it.
-  * [out] p_challenge : the computed challenge : [random nonce + received SecurityToken]
   */
-  int ReadCommand(Command* p_cmd, Response* p_resp, Challenge*);
+  int ReadCommand(Command* p_cmd, Response* p_resp);
 
   int WriteResponse(const Response& response);
 
-private:
+//private:
   enum max_burst_size {
     //!
     // Because communication channel's stack size is limited :
@@ -55,7 +54,7 @@ private:
     // - sends a ack byte set to kMaxBurst
     // - repeat until full buffer is fully transfered
     //
-    kMaxBurst = 50
+    kMaxBurst = 15
   };
 
   //!
