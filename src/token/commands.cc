@@ -3,7 +3,9 @@
 #include <token/commands.h>
 
 #include <Arduino.h>
-#include <USBAPI.h>
+//#include <USBAPI.h>
+#include <Keyboard.h>
+#include <HID.h>
 
 #include <token/token.h>
 #include <token/password.h>
