@@ -1,0 +1,12 @@
+[submodule "third_party/libraries/nRF8001"]
+	path = third_party/libraries/nRF8001
+	url = git@github.com:amoriello/nRF8001.git
+[submodule "third_party/hardware/Blend"]
+	path = third_party/hardware/Blend
+	url = git@github.com:amoriello/Blend.git
+[submodule "third_party/libraries/ble-sdk-arduino"]
+	path = third_party/libraries/ble-sdk-arduino
+	url = git@github.com:amoriello/ble-sdk-arduino.git
+[submodule "third_party/Arduino-Makefile"]
+	path = third_party/Arduino-Makefile
+	url = git@github.com:amoriello/Arduino-Makefile.git
