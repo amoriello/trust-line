@@ -217,7 +217,6 @@ void RegistrerCommands() {
   g_cmd_registrer[cmdid::kReturnPassword] = &ReturnPassword;
   g_cmd_registrer[cmdid::kLockComputer] = &LockComputer;
   g_cmd_registrer[cmdid::kTypeString] = &TypeString;
-  g_cmd_registrer[cmdid::kNbCmd] = 0;  // kNbCmd == nb registrered cmd
 }
 
 
