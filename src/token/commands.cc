@@ -3,9 +3,12 @@
 #include <token/commands.h>
 
 #include <Arduino.h>
-//#include <USBAPI.h>
-#include <Keyboard.h>
-#include <HID.h>
+
+#ifndef TEST_NO_KEYBOARD
+  //#include <Keyboard.h>
+  //#include <HID.h>
+  #include <HID-Project.h>
+#endif  // TEST_NO_KEYBOARD
 
 #include <token/token.h>
 #include <token/password.h>

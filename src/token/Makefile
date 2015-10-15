@@ -29,12 +29,25 @@ THIRD_PARTY_NRF8001_SRCS =					\
 THIRD_PARTY_BLE_SDK_LIBDIR = ${THIRD_PARTY_LIB_DIR}/ble-sdk-arduino/libraries/BLE
 THIRD_PARTY_BLE_SDK_SRCS = $(wildcard ${THIRD_PARTY_BLE_SDK_LIBDIR}/*.cpp)
 
+
+THIRD_PARTY_HID_SRCS =  $(wildcard ${THIRD_PARTY_LIB_DIR}/HID/src/MultiReport/*.cpp)
+THIRD_PARTY_HID_SRCS += $(wildcard ${${THIRD_PARTY_LIB_DIR}/HID/src/SingleReport/*.cpp)
+THIRD_PARTY_HID_INC_DIR =				\
+	${THIRD_PARTY_LIB_DIR}/HID/			\
+	-I${THIRD_PARTY_LIB_DIR}/HID/src 	\
+	-I${THIRD_PARTY_LIB_DIR}/HID/src/SingleReport	\
+	-I${THIRD_PARTY_LIB_DIR}/HID/src/MultiReport	
+
+
+
+
 THIRD_PARTY_LIB_INCLUDES = \
 		-I${THIRD_PARTY_LIB_DIR}/AES/ 				\
 		-I${THIRD_PARTY_LIB_DIR}/Entropy/			\
 		-I${THIRD_PARTY_LIB_DIR}/sha256/			\
 		-I${THIRD_PARTY_LIB_DIR}/nRF8001/src/		\
-		-I${THIRD_PARTY_BLE_SDK_LIBDIR}/
+		-I${THIRD_PARTY_BLE_SDK_LIBDIR}/			\
+		-I${THIRD_PARTY_HID_INC_DIR}
 
 
 
@@ -63,14 +76,15 @@ LOCAL_CPP_SRCS += \
 	${THIRD_PARTY_ENTROPY_SRCS}			\
 	${THIRD_PARTY_SHA256_SRCS}			\
 	${THIRD_PARTY_NRF8001_SRCS}			\
-	${THIRD_PARTY_BLE_SDK_SRCS}
+	${THIRD_PARTY_BLE_SDK_SRCS}			\
+	${THIRD_PARTY_HID_SRCS}
 
-ARDUINO_VERSION					= 166
+ARDUINO_VERSION					= 16666
 
 BOARD_HARDWARE_PATH = $(THIRD_PARTY_DIR)/hardware/Blend/Arduino/hardware/blend
 
 
-ARDUINO_LIBS = Wire EEPROM LiquidCrystal SPI Keyboard HID
+ARDUINO_LIBS = Wire EEPROM LiquidCrystal SPI HID
 
 
 ### AVR_GCC_VERSION
@@ -117,7 +131,7 @@ AVRDDUDE          = /usr/local/bin/avrdude
 #CFLAGS_STD        = -std=gnu11
 
 ### CXXFLAGS_STD
-#CXXFLAGS_STD      = -std=gnu++11
+CXXFLAGS_STD      = -std=c++11
 
 ### CPPFLAGS
 ### Flags you might want to set for debugging purpose. Comment to stop.

@@ -6,9 +6,9 @@
 #include <EEPROM.h>
 
 #ifndef TEST_NO_KEYBOARD
-  //#include <USBAPI.h>
-  #include <Keyboard.h>
-  #include <HID.h>
+  //#include <Keyboard.h>
+  //#include <HID.h>
+  #include <HID-Project.h>
 #endif  // TEST_NO_KEYBOARD
 
 
