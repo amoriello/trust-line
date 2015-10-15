@@ -1,5 +1,5 @@
 
-## Password Helper Device
+## Password Generator / Writer Device (Work in progress)
 
 Use different strong passwords for every service and:
 
