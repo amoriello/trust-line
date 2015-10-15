@@ -10,3 +10,6 @@
 [submodule "third_party/Arduino-Makefile"]
 	path = third_party/Arduino-Makefile
 	url = git@github.com:amoriello/Arduino-Makefile.git
+[submodule "third_party/libraries/HID"]
+	path = third_party/libraries/HID
+	url = git@github.com:amoriello/HID.git
