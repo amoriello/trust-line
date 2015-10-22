@@ -125,6 +125,15 @@ void Crypto::CreateAndStoreKeys() {
 }
 
 
+void Crypto::StoreKeys(const SymKey& pass_key,
+                       const SymKey& cr_key,
+                       const SymKey& req_key) {
+  _StoreSymKey(pass_key, kPassKey);
+  _StoreSymKey(cr_key_, kCRKey);
+  _StoreSymKey(req_key_, kReqKey);
+
+  LoadKeys();
+}
 
 void Crypto::Reset() {
   _ResetKey(&pass_key_, kPassKey);

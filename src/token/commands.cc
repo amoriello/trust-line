@@ -192,6 +192,27 @@ void ReturnPassword(const Command& cmd) {
 }
 
 
+void ResetKeys(const Command& cmd) {
+  Response resp;
+  // Version (1 byte) + 3 * 16 byte key
+  if (cmd.hdr.arg_size != 49) {
+    resp.hdr.id = respid::kInvalidArgument;
+    resp.hdr.arg_size = 0;
+    g_chan.WriteResponse(resp);    
+    return;
+  }
+
+  uint8_t version = cmd.arg[0];
+
+  SymKey* p_pass_key = (SymKey*)&cmd.arg[1];
+  SymKey* p_cr_key = (SymKey*)&cmd.arg[17];
+  SymKey* p_req_key = (SymKey*)&cmd.arg[33];
+
+  g_token.StoreKeys(*p_pass_key, *p_cr_key, *p_req_key);
+}
+
+
+
 void Reset(const Command& cmd) {
   Response resp;
 
@@ -215,6 +236,7 @@ void RegistrerCommands() {
   g_cmd_registrer[cmdid::kReturnPassword] = &ReturnPassword;
   g_cmd_registrer[cmdid::kLockComputer] = &LockComputer;
   g_cmd_registrer[cmdid::kTypeString] = &TypeString;
+  g_cmd_registrer[cmdid::kResetKeys] = &ResetKeys;
 }
 
 

@@ -57,6 +57,12 @@ class Crypto {
   // password
   const SymKey& ReqKey() const;
 
+  // Stores and reload given symetric keys.
+  // This function is used to restore a token
+  // using QrCode (@see Command "ResetKey")
+  void StoreKeys(const SymKey& pass_key, const SymKey& cr_key,
+                 const SymKey& req_key);
+
   void Reset();
 
  private:
