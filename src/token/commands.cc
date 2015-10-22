@@ -209,6 +209,14 @@ void ResetKeys(const Command& cmd) {
   SymKey* p_req_key = (SymKey*)&cmd.arg[33];
 
   g_token.StoreKeys(*p_pass_key, *p_cr_key, *p_req_key);
+
+  // The token is now paired
+  g_token.Pair();
+
+  resp.hdr.id = respid::kOk;
+  resp.hdr.arg_size = 0;
+
+  g_chan.WriteResponse(resp);
 }
 
 
