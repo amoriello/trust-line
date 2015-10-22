@@ -176,7 +176,8 @@ void ReturnPassword(const Command& cmd) {
   if (cmd.hdr.arg_size != 80) {
     resp.hdr.id = respid::kInvalidArgument;
     resp.hdr.arg_size = 0;
-    g_chan.WriteResponse(resp);    
+    g_chan.WriteResponse(resp);
+    return;  
   }
 
   DecipherPassword(cmd.arg, g_token.PassKey(), &pass);
