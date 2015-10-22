@@ -82,6 +82,19 @@ class Token {
     return crypto_.ReqKey();
   }
 
+
+  /*!
+   * Store given key and reload them
+   *
+   * This function is used when you want to replicate a token using
+   * keys from a previous (broken?) token, using Trustline secret QRCode
+   *
+   */
+  void StoreKeys(const SymKey& pass_key, const SymKey& cr_key,
+                 const SymKey& req_key) {
+    crypto_.StoreKeys(pass_key, cr_key, req_key);
+  }
+
   /*!
    * Factory reset the Token.
    *

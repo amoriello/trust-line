@@ -92,9 +92,7 @@ void TypePassword(const Command& cmd) {
 
   TLOG2("TypePassword");
 
-  if (cmd.hdr.arg_size < 80 || cmd.hdr.arg_size > 85) {
-    TLOG2("No Way");
-    TLOG2(cmd.hdr.arg_size, DEC);
+  if (cmd.hdr.arg_size < 80 || cmd.hdr.arg_size > 81) {
     resp.hdr.id = respid::kInvalidArgument;
     resp.hdr.arg_size = 0;
     g_chan.WriteResponse(resp);
@@ -104,22 +102,15 @@ void TypePassword(const Command& cmd) {
   DecipherPassword(cmd.arg, g_token.PassKey(), (Password*)&resp.arg);
 
   char* p_password = (char*)&resp.arg[1];
-  TLOG2(p_password);
 
 #ifndef TEST_NO_KEYBOARD
   Keyboard.print(p_password);
-#endif  // TEST_NO_KEYBOARD
-  TLOG("ArgSize:");
-  TLOG(cmd.hdr.arg_size, DEC);
-  uint8_t nbAdditionnalKeyPress = cmd.hdr.arg_size - 80;
-  for (uint8_t i = 0; i < nbAdditionnalKeyPress; ++i) {
-    TLOG2("More keys");
-    TLOG2(cmd.arg[80 + i], HEX);
-    #ifndef TEST_NO_KEYBOARD
-    Keyboard.press(cmd.arg[80 + i]);
+
+  if (cmd.hdr.arg_size == 81) {  // Need to press enter?
+    Keyboard.press(KEY_ENTER);
     Keyboard.releaseAll();
-    #endif  // TEST_NO_KEYBOARD
   }
+#endif  // TEST_NO_KEYBOARD
 
   resp.hdr.id = respid::kOk;
   resp.hdr.arg_size = 0;
@@ -151,24 +142,25 @@ void TypeString(const Command& cmd) {
 
   char* string = (char*)cmd.arg;
 
+#ifndef TEST_NO_KEYBOARD
+  Keyboard.print(string);
+
   //length will contains string length + 1
   uint8_t length = 0;
   while (string[length++]);
 
-  // Special characters
+  // Check for additional key
   if (cmd.hdr.arg_size > length) {
     uint8_t nbAdditionnalKeyPress = cmd.hdr.arg_size - length;
     uint8_t beginKeyIndex = cmd.hdr.arg_size - nbAdditionnalKeyPress;
     for (uint8_t i = 0; i < nbAdditionnalKeyPress; ++i) {
-      #ifndef TEST_NO_KEYBOARD
       Keyboard.press(cmd.arg[beginKeyIndex + i]);
       Keyboard.releaseAll();
-      #endif  // TEST_NO_KEYBOARD
     }
   }
+#endif  // TEST_NO_KEYBOARD
 
 
-  Keyboard.print(string);
 
   resp.hdr.id = respid::kOk;
   resp.hdr.arg_size = 0;
@@ -184,7 +176,8 @@ void ReturnPassword(const Command& cmd) {
   if (cmd.hdr.arg_size != 80) {
     resp.hdr.id = respid::kInvalidArgument;
     resp.hdr.arg_size = 0;
-    g_chan.WriteResponse(resp);    
+    g_chan.WriteResponse(resp);
+    return;  
   }
 
   DecipherPassword(cmd.arg, g_token.PassKey(), &pass);
@@ -197,6 +190,27 @@ void ReturnPassword(const Command& cmd) {
 
   g_chan.WriteResponse(resp);
 }
+
+
+void ResetKeys(const Command& cmd) {
+  Response resp;
+  // Version (1 byte) + 3 * 16 byte key
+  if (cmd.hdr.arg_size != 49) {
+    resp.hdr.id = respid::kInvalidArgument;
+    resp.hdr.arg_size = 0;
+    g_chan.WriteResponse(resp);    
+    return;
+  }
+
+  uint8_t version = cmd.arg[0];
+
+  SymKey* p_pass_key = (SymKey*)&cmd.arg[1];
+  SymKey* p_cr_key = (SymKey*)&cmd.arg[17];
+  SymKey* p_req_key = (SymKey*)&cmd.arg[33];
+
+  g_token.StoreKeys(*p_pass_key, *p_cr_key, *p_req_key);
+}
+
 
 
 void Reset(const Command& cmd) {
@@ -222,6 +236,7 @@ void RegistrerCommands() {
   g_cmd_registrer[cmdid::kReturnPassword] = &ReturnPassword;
   g_cmd_registrer[cmdid::kLockComputer] = &LockComputer;
   g_cmd_registrer[cmdid::kTypeString] = &TypeString;
+  g_cmd_registrer[cmdid::kResetKeys] = &ResetKeys;
 }
 
 

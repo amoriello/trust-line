@@ -96,8 +96,9 @@ void ExecuteCommand() {
 
   if (!g_token.IsPaired()) {
     // Token first use, we only accept command kPair
+    // Or command ResetKeys
     // Blink Yellow
-    if (cmd.hdr.id == cmdid::kPair) {
+    if (cmd.hdr.id == cmdid::kPair || cmd.hdr.id == cmdid::kResetKeys) {
       g_cmd_registrer[cmd.hdr.id](cmd);
     } else {
       // Blink yellow code signal invalid command
