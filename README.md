@@ -93,7 +93,7 @@ Used material :
 ### Where is the iPhone App?
 Work in progress, but I'm a total newbie in GUI design, so I'm open to any contribution.
 
-The iPhone app will also be OpenSource, and I will find a way to prove that the binary signed version on the Appstore matches the sources.
+The iPhone app is also be OpenSource, and available here: [Trustline Ios App](https://github.com/amoriello/trust-line-ios)
 
 ### How to build/test?
 Refer to the [wiki](https://github.com/amoriello/trust-line/wiki) section.
