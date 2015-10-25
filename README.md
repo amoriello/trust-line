@@ -58,10 +58,9 @@ The security is "almost" the same when you type your password by yourself. Almos
 - It's OK, you can create a new one, and recover your passwords:
 
 When you pair the token with your phone for the first time, the secrets keys of the Token are sent to the phone.
-The phone encrypt them with a generated AES key. Let's call it the Recovery Key. It's generated for simplicity, but you can override it using your own strong passphrase that will be derivated (PBKDF2) to generate the Recovery Key.
 The application will ask you to print this secret Recovery Key (as a QR code), and put it in a safe somewhere...safe.
 
-So yes, there are 4 keys (and that's the last, I promise).
+You can use this QrCode to initialize a new token. This new token will become a "clone" of your lost one.
 
 - The token security rely on electronic. Lock-bits will be activated to protect it's memory against external read/write. It would also be fun to imagine a secure enclosure, that breaks if someone tries to open it, so that you know that someone attempted something.
 
