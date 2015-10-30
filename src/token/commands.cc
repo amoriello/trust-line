@@ -20,7 +20,7 @@
 CmdProcessor g_cmd_registrer[cmdid::kNbCmd];
 
 
-
+//-----------------------------------------------------------------------------
 void Pair(const Command&) {
   Response resp;
 
@@ -46,6 +46,7 @@ void Pair(const Command&) {
 }
 
 
+//-----------------------------------------------------------------------------
 void CreateChallenge(const Command&) {
   Response resp;
 
@@ -61,6 +62,20 @@ void CreateChallenge(const Command&) {
 }
 
 
+//-----------------------------------------------------------------------------
+void Reset(const Command&) {
+  Response resp;
+
+  g_token.Reset();
+
+  resp.hdr.id = respid::kOk;
+  resp.hdr.arg_size = 0;
+
+  g_chan.WriteResponse(resp);
+}
+
+
+//-----------------------------------------------------------------------------
 void CreatePassword(const Command& cmd) {
   Response resp;
   Password pass;
@@ -86,6 +101,7 @@ void CreatePassword(const Command& cmd) {
 }
 
 
+//-----------------------------------------------------------------------------
 void TypePassword(const Command& cmd) {
   Response resp;
 
@@ -121,6 +137,33 @@ void TypePassword(const Command& cmd) {
 }
 
 
+//-----------------------------------------------------------------------------
+void ReturnPassword(const Command& cmd) {
+  Response resp;
+  Password pass;
+
+  TLOG2("ReturnPassword");
+
+  if (cmd.hdr.arg_size != 80) {
+    resp.hdr.id = respid::kInvalidArgument;
+    resp.hdr.arg_size = 0;
+    g_chan.WriteResponse(resp);
+    return;
+  }
+
+  DecryptPassword(cmd.arg, g_token.PassKey(), &pass);
+
+  auto arg_size = EncryptPassword(pass, g_token.ReqKey(), resp.arg);
+
+
+  resp.hdr.id = respid::kOk;
+  resp.hdr.arg_size = arg_size;
+
+  g_chan.WriteResponse(resp);
+}
+
+
+//-----------------------------------------------------------------------------
 void LockComputer(const Command&) {
   Response resp;
 
@@ -133,6 +176,7 @@ void LockComputer(const Command&) {
 }
 
 
+//-----------------------------------------------------------------------------
 void TypeString(const Command& cmd) {
   Response resp;
 
@@ -171,31 +215,7 @@ void TypeString(const Command& cmd) {
 }
 
 
-void ReturnPassword(const Command& cmd) {
-  Response resp;
-  Password pass;
-
-  TLOG2("ReturnPassword");
-
-  if (cmd.hdr.arg_size != 80) {
-    resp.hdr.id = respid::kInvalidArgument;
-    resp.hdr.arg_size = 0;
-    g_chan.WriteResponse(resp);
-    return;
-  }
-
-  DecryptPassword(cmd.arg, g_token.PassKey(), &pass);
-
-  auto arg_size = EncryptPassword(pass, g_token.ReqKey(), resp.arg);
-
-
-  resp.hdr.id = respid::kOk;
-  resp.hdr.arg_size = arg_size;
-
-  g_chan.WriteResponse(resp);
-}
-
-
+//-----------------------------------------------------------------------------
 void ResetKeys(const Command& cmd) {
   Response resp;
   // Version (1 byte) + 3 * 16 byte key
@@ -224,17 +244,6 @@ void ResetKeys(const Command& cmd) {
 }
 
 
-
-void Reset(const Command&) {
-  Response resp;
-
-  g_token.Reset();
-
-  resp.hdr.id = respid::kOk;
-  resp.hdr.arg_size = 0;
-
-  g_chan.WriteResponse(resp);
-}
 
 namespace /* anonymous */ {
 
