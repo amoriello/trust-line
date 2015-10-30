@@ -68,7 +68,7 @@ void CreatePassword(const Command& cmd) {
   TLOG2("CreatePassword");
 
   uint8_t size = cmd.arg[0];
-  if (size > Password::kMaxSize) {
+  if (size > Password::kMaxCharacters) {
     resp.hdr.id = respid::kInvalidArgument;
     resp.hdr.arg_size = 0;
     g_chan.WriteResponse(resp);
@@ -77,11 +77,10 @@ void CreatePassword(const Command& cmd) {
 
   CreatePassword(&pass, size);
   
-  CipherPassword(pass, g_token.PassKey(), resp.arg);
+  uint8_t arg_size = EncryptPassword(pass, g_token.PassKey(), &resp.arg[0]);
 
   resp.hdr.id = respid::kOk;
-  // IV + 4 * 16 bytes
-  resp.hdr.arg_size = 80;
+  resp.hdr.arg_size = arg_size;
 
   g_chan.WriteResponse(resp);
 }
@@ -99,9 +98,13 @@ void TypePassword(const Command& cmd) {
     return;    
   }
 
-  DecipherPassword(cmd.arg, g_token.PassKey(), (Password*)&resp.arg);
+  // This is valid has long has Password has 1 data member aligned
+  // and packed(1)
+  Password* p_pass = (Password*)resp.arg;
 
-  char* p_password = (char*)&resp.arg[1];
+  DecryptPassword(cmd.arg, g_token.PassKey(), p_pass);
+
+  char* p_password = (char*)&resp.arg;
 
 #ifndef TEST_NO_KEYBOARD
   Keyboard.print(p_password);
@@ -171,22 +174,29 @@ void TypeString(const Command& cmd) {
 void ReturnPassword(const Command& cmd) {
   Response resp;
   Password pass;
+
   TLOG2("ReturnPassword");
 
   if (cmd.hdr.arg_size != 80) {
     resp.hdr.id = respid::kInvalidArgument;
     resp.hdr.arg_size = 0;
     g_chan.WriteResponse(resp);
-    return;  
+    return;
   }
 
-  DecipherPassword(cmd.arg, g_token.PassKey(), &pass);
+  /*** This works ***/
+  //DecipherPassword(cmd.arg, g_token.PassKey(), (Password*)&resp2.arg);
 
-  CipherPassword(pass, g_token.ReqKey(), resp.arg);
+  //CipherPassword(*(Password*)&resp2.arg, g_token.ReqKey(), resp.arg);
+  /*** This works ***/
+
+  DecryptPassword(cmd.arg, g_token.PassKey(), &pass);
+
+  auto arg_size = EncryptPassword(pass, g_token.ReqKey(), resp.arg);
+
 
   resp.hdr.id = respid::kOk;
-  // IV + 4 * 16 bytes
-  resp.hdr.arg_size = 80;
+  resp.hdr.arg_size = arg_size;
 
   g_chan.WriteResponse(resp);
 }
@@ -202,7 +212,7 @@ void ResetKeys(const Command& cmd) {
     return;
   }
 
-  uint8_t version = cmd.arg[0];
+  //uint8_t version = cmd.arg[0];
 
   SymKey* p_pass_key = (SymKey*)&cmd.arg[1];
   SymKey* p_cr_key = (SymKey*)&cmd.arg[17];

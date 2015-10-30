@@ -9,47 +9,64 @@
 struct SymKey;
 struct AES;
 
-union Password {
-  enum PassEnum {
-    kMaxSize = 63
-  };
-  
-  enum SizeInfo {
-    kSizeIndex = 0
+#pragma pack(1)
+struct Password {
+  enum info : uint8_t {
+  	kMaxCharacters = 63
   };
 
-  uint8_t size;
-  uint8_t data[64];  // 1 byte to store size + 63 password chars
-  // One byte reserved for real password size
+  // Password Data
+  // is multple of AES 128 blocksize for ease of use later
+  //
+  uint8_t data[kMaxCharacters + 1];  // + 1 for ending 0
+
 };
+#pragma pack()
 
 
 
-
-//
-// ciphered data layout :
-//
-// [block1][block2 | block3 | block4 | block5]
-// [0---16][xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx]
-//   IV         K(password)
-//
-// 5 blocks of 16 bytes (80 bytes)
-
-
+/**
+ * Create a password with default ASCII printable range
+ *
+ * in/out p_pass  : The password (@see Password) to be filled
+ * in required_pass_size : the password's number of character
+ *                         (must not exceed Password::kMaxCharachter)
+ */
 void CreatePassword(Password* p_pass, uint8_t required_pass_size);
 
 
-/////// Constraints :
-//// Buffer input size : 64 bytes (4 blocks)
-//// p_data size : 80 bytes (iv + 4 blocks)
-// Return size of cipher (80 for now)
-uint8_t CipherPassword(const Password& pass, const SymKey& sym_key, uint8_t* p_data);
 
 
-/////// Constraints :
-//// p_data size : 80 bytes (iv + 4 blocks)
-// Return size of deciphered password
-uint8_t DecipherPassword(const uint8_t* p_data, const SymKey& sym_key, Password* p_pass);
+///////////////////////////////////////////////////////////////
+// ciphered data layout :
+//
+// [......][block1 | block2 | block3 | block4]
+// [0---15][xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx]
+//   IV         K(password)
+//
+// 4 blocks of 16 bytes + iv = 4 * 16 + 16 = 80 bytes
+///////////////////////////////////////////////////////////////
+
+
+/**
+ * Encrypt a Password with given key. p_data is filled with ciphered 
+ * password + iv (see ciphered data layout)
+ *
+ * in p_pass  : The password (see Password)
+ * in sym_key : The AES128 byte symetric key
+ * in/out p_data : the ciphered data ouput (80 bytes, see ciphered data layout)
+ */
+uint8_t EncryptPassword(const Password& pass, const SymKey& sym_key, uint8_t* p_data);
+
+
+/**
+ * Decrypt a Password with given key. p_pass is filled with decrypted password
+ *
+ * in p_data  : the ciphered data ouput (80 bytes, see ciphered data layout)
+ * in sym_key : The AES128 byte symetric key
+ * in/out p_pass : The password (see Password)
+ */
+uint8_t DecryptPassword(const uint8_t* p_data, const SymKey& sym_key, Password* p_pass);
 
 
 #endif  // SRC_TOKEN_PASSWORD_H_
