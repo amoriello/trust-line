@@ -184,12 +184,6 @@ void ReturnPassword(const Command& cmd) {
     return;
   }
 
-  /*** This works ***/
-  //DecipherPassword(cmd.arg, g_token.PassKey(), (Password*)&resp2.arg);
-
-  //CipherPassword(*(Password*)&resp2.arg, g_token.ReqKey(), resp.arg);
-  /*** This works ***/
-
   DecryptPassword(cmd.arg, g_token.PassKey(), &pass);
 
   auto arg_size = EncryptPassword(pass, g_token.ReqKey(), resp.arg);
