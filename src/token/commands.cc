@@ -21,7 +21,7 @@ CmdProcessor g_cmd_registrer[cmdid::kNbCmd];
 
 
 
-void Pair(const Command& cmd) {
+void Pair(const Command&) {
   Response resp;
 
   g_token.Pair();
@@ -46,7 +46,7 @@ void Pair(const Command& cmd) {
 }
 
 
-void CreateChallenge(const Command& cmd) {
+void CreateChallenge(const Command&) {
   Response resp;
 
   TLOG2("Challenge");
@@ -118,7 +118,7 @@ void TypePassword(const Command& cmd) {
 }
 
 
-void LockComputer(const Command& cmd) {
+void LockComputer(const Command&) {
   Response resp;
 
   Keyboard.press(KEY_LEFT_GUI);
@@ -221,7 +221,7 @@ void ResetKeys(const Command& cmd) {
 
 
 
-void Reset(const Command& cmd) {
+void Reset(const Command&) {
   Response resp;
 
   g_token.Reset();
