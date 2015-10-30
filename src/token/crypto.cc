@@ -164,11 +164,6 @@ bool IsValidSecurityToken(const Command& cmd, const SymKey& cr_key) {
 
   _ComputeValidSecToken(cmd, g_current_challenge, cr_key, valid_response);
 
-  //TLOG("Token:");
-  TLOG2((char*)g_current_challenge.nonce, 5, HEX);
-  //TLOG("Valid:");
-  TLOG2((char*)valid_response, 5, HEX);
-
   for (uint8_t i = 0; i < HASH_LENGTH; ++i) {
     if (cmd.sec_token[i] != valid_response[i]) {
       return false;
