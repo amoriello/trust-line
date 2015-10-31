@@ -90,7 +90,7 @@ void CreateChallenge(Challenge* p_challenge);
 
 bool IsValidSecurityToken(const Command& cmd, const SymKey& cr_key);
 
-void FillWithRandom(uint8_t* p_data, uint16_t data_size, const Range& range);
-
+void FillWithRandom(uint8_t* p_data, uint16_t data_size, const Range& range,
+                    const uint8_t* p_exculdes = 0, uint8_t exclude_size = 0);
 
 #endif  // SRC_TOKEN_SYMKEY_H_

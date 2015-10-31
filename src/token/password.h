@@ -28,6 +28,11 @@ struct Password {
 /**
  * Create a password with default ASCII printable range
  *
+ * Note that character Quote (') Pipe (|) and space ( )
+ * is excluded for various reasons:
+ *  - i,l I and | could be hard to destinguish, idem for space
+ *  - ' " or ` can poorly fail in some site...
+ *
  * in/out p_pass  : The password (@see Password) to be filled
  * in required_pass_size : the password's number of character
  *                         (must not exceed Password::kMaxCharachter)

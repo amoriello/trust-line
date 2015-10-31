@@ -142,9 +142,28 @@ void Crypto::Reset() {
 }
 
 
-void FillWithRandom(uint8_t* p_data, uint16_t data_size, const Range& range) {
+void FillWithRandom(uint8_t* p_data, uint16_t data_size, const Range& range,
+                    const uint8_t* p_exculdes, uint8_t exculde_size) {
+  auto should_exculde = [&](char byte) {
+    if (p_exculdes == nullptr) {
+      return false;
+    }
+
+    for (auto i = 0; i < exculde_size; ++i) {
+      if (byte == p_exculdes[i]) {
+        return true;
+      }
+    }
+    return false;
+  };
+
   for (uint16_t i = 0; i < data_size; ++i) {
-    p_data[i] = Entropy.random(range.begin, range.end);
+    auto random_byte = 0;
+    do {
+      random_byte = Entropy.random(range.begin, range.end);
+    } while (should_exculde(random_byte));
+
+    p_data[i] = random_byte;
   }
 }
 
