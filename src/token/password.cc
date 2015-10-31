@@ -74,8 +74,10 @@ uint8_t DecryptPassword(const uint8_t* p_data, const SymKey& sym_key,
   uint8_t* pass_cipher_begin = (uint8_t*)(p_data + 16);  // idem
 
   g_p_aes->set_key((byte*)sym_key.data, 128);
+  
+  // bypass constness... 
   g_p_aes->cbc_decrypt(pass_cipher_begin, (uint8_t*)p_pass->data,
-                       sizeof(Password::data) / block_size, iv);  // bypass constness...
+                       sizeof(Password::data) / block_size, iv);
   return 0xff;
 }
 

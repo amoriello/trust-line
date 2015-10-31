@@ -158,7 +158,7 @@ void FillWithRandom(uint8_t* p_data, uint16_t data_size, const Range& range,
   };
 
   for (uint16_t i = 0; i < data_size; ++i) {
-    auto random_byte = 0;
+    uint8_t random_byte = 0;
     do {
       random_byte = Entropy.random(range.begin, range.end);
     } while (should_exculde(random_byte));
