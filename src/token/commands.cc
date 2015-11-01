@@ -11,7 +11,6 @@
 #endif  // TEST_NO_KEYBOARD
 
 #include <token/token.h>
-#include <token/password.h>
 #include <token/crypto.h>
 #include <token/communication/channel.h>
 #include <token/log.h>
@@ -28,9 +27,9 @@ void Pair(const Command&) {
 
   TLOG2("Pair");
 
-  const SymKey& pass_key = g_token.PassKey();
-  const SymKey& cr_key = g_token.CRKey();
-  const SymKey& req_key = g_token.ReqKey();
+  const auto& pass_key = g_token.PassKey();
+  const auto& cr_key = g_token.CRKey();
+  const auto& req_key = g_token.ReqKey();
 
   resp.hdr.id = respid::kOk;
   uint8_t key_size = sizeof(pass_key.data);
@@ -53,9 +52,9 @@ void CreateChallenge(const Command&) {
   TLOG2("Challenge");
 
   resp.hdr.id = respid::kOk;
-  resp.hdr.arg_size = sizeof(Challenge);
+  resp.hdr.arg_size = sizeof(Crypto::Challenge);
 
-  Challenge* p_challenge = (Challenge*)(&resp.arg);
+  auto p_challenge = (Crypto::Challenge*)(&resp.arg);
   CreateChallenge(p_challenge);
 
   g_chan.WriteResponse(resp);
@@ -83,7 +82,7 @@ void CreatePassword(const Command& cmd) {
   TLOG2("CreatePassword");
 
   uint8_t size = cmd.arg[0];
-  if (size > Password::kMaxCharacters) {
+  if (size > NbMaxASCIIChar<Password>::value) {
     resp.hdr.id = respid::kInvalidArgument;
     resp.hdr.arg_size = 0;
     g_chan.WriteResponse(resp);
@@ -92,7 +91,7 @@ void CreatePassword(const Command& cmd) {
 
   CreatePassword(&pass, size);
   
-  uint8_t arg_size = EncryptPassword(pass, g_token.PassKey(), &resp.arg[0]);
+  uint8_t arg_size = Encrypt(pass, g_token.PassKey(), &resp.arg[0]);
 
   resp.hdr.id = respid::kOk;
   resp.hdr.arg_size = arg_size;
@@ -118,12 +117,11 @@ void TypePassword(const Command& cmd) {
   // and packed(1)
   Password* p_pass = (Password*)resp.arg;
 
-  DecryptPassword(cmd.arg, g_token.PassKey(), p_pass);
+  Decrypt(cmd.arg, g_token.PassKey(), p_pass);
 
-  char* p_password = (char*)&resp.arg;
 
 #ifndef TEST_NO_KEYBOARD
-  Keyboard.print(p_password);
+  Keyboard.print((char*)p_pass->data);
 
   if (cmd.hdr.arg_size == 81) {  // Need to press enter?
     Keyboard.press(KEY_ENTER);
@@ -151,9 +149,9 @@ void ReturnPassword(const Command& cmd) {
     return;
   }
 
-  DecryptPassword(cmd.arg, g_token.PassKey(), &pass);
+  Decrypt(cmd.arg, g_token.PassKey(), &pass);
 
-  auto arg_size = EncryptPassword(pass, g_token.ReqKey(), resp.arg);
+  auto arg_size = Encrypt(pass, g_token.ReqKey(), resp.arg);
 
 
   resp.hdr.id = respid::kOk;
@@ -228,9 +226,9 @@ void ResetKeys(const Command& cmd) {
 
   //uint8_t version = cmd.arg[0];
 
-  SymKey* p_pass_key = (SymKey*)&cmd.arg[1];
-  SymKey* p_cr_key = (SymKey*)&cmd.arg[17];
-  SymKey* p_req_key = (SymKey*)&cmd.arg[33];
+  auto p_pass_key = (Crypto::SymKey*)&cmd.arg[1];
+  auto p_cr_key = (Crypto::SymKey*)&cmd.arg[17];
+  auto p_req_key = (Crypto::SymKey*)&cmd.arg[33];
 
   g_token.StoreKeys(*p_pass_key, *p_cr_key, *p_req_key);
 

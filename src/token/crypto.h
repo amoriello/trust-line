@@ -5,63 +5,52 @@
 
 #include <stdint.h>
 #include <LiquidCrystal.h>
+#include <AES.h>
+
+#include <token/range.h>
+#include <token/encryptable.h>
 
 struct Command;
 
-struct SymKey {
-  uint8_t data[16];  // 128 bits aes symkey
-};
-
-
-#pragma pack(1)
-struct Challenge {
-  uint8_t nonce[8];  // 64 bit random value
-};
-#pragma pack(0)
-
-
-struct Range {
-  Range(uint16_t i_begin, uint16_t i_end)
-    : begin(i_begin), end(i_end) { }
-    
-  Range(uint16_t i_end)
-    : begin(0), end(i_end) { }
-
-  uint16_t begin;
-  uint16_t end;
-};
-
-namespace keyindex {
-
-enum idx {
-  kPassKey = 0,
-  kCRKey = 16,
-  kReqKey = 32
-};
-
-}  // keyindex
 
 
 class Crypto {
+ public:  // Make it non-copyable
+  Crypto(const Crypto&) = delete;
+  Crypto& operator=(const Crypto&) = delete;
+
+  Crypto() {}
+
+
+ public:
+  struct SymKey {
+    uint8_t data[16];  // 128 bits aes symkey
+  };
+
+  struct Challenge {
+    uint8_t nonce[8];  // 64 bits random value
+  };
+
  public:
   void Initialize(bool first_time);
 
   // The key used to ciph password
-  const SymKey& PassKey() const;
+  const Crypto::SymKey& PassKey() const;
 
   // The key use to verify peer and command by challenge/response
-  const SymKey& CRKey() const;
+  const Crypto::SymKey& CRKey() const;
 
   // The key used to trans-cipher a password, send it back securely
   // to the phone, so that the peer can deciph and see a clear
   // password
-  const SymKey& ReqKey() const;
+  const Crypto::SymKey& ReqKey() const;
 
   // Stores and reload given symetric keys.
   // This function is used to restore a token
   // using QrCode (@see Command "ResetKey")
   void StoreKeys(const SymKey& pass_key, const SymKey& cr_key,
                  const SymKey& req_key);
+
 
   void Reset();
 
@@ -85,10 +74,9 @@ private:
 };
 
 
+void CreateChallenge(Crypto::Challenge* p_challenge);
 
-void CreateChallenge(Challenge* p_challenge);
-
-bool IsValidSecurityToken(const Command& cmd, const SymKey& cr_key);
+bool IsValidSecurityToken(const Command& cmd, const Crypto::SymKey& cr_key);
 
 void FillWithRandom(uint8_t* p_data, uint16_t data_size, const Range& range,
                     const uint8_t* p_exculdes = 0, uint8_t exclude_size = 0);

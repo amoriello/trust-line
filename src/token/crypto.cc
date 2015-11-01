@@ -12,13 +12,13 @@
 
 
 //  The current challenge.
-//  Next Command's response MUST reslove this challenge
-Challenge g_current_challenge;
+//  Next Command MUST reslove this challenge
+Crypto::Challenge g_current_challenge;
 
 namespace {
 
-void _ComputeValidSecToken(const Command& cmd, const Challenge& challenge,
-                           const SymKey& cr_key, uint8_t* p_result) {
+void _ComputeValidSecToken(const Command& cmd, const Crypto::Challenge& challenge,
+                           const Crypto::SymKey& cr_key, uint8_t* p_result) {
   Sha256.initHmac(cr_key.data, sizeof(cr_key.data));
 
   // Computing hash for sent nonce
@@ -41,7 +41,7 @@ void _ComputeValidSecToken(const Command& cmd, const Challenge& challenge,
 }
 
 
-void _ResetKey(SymKey* p_key, uint8_t idx) {
+void _ResetKey(Crypto::SymKey* p_key, uint8_t idx) {
   for (uint16_t i = 0; i < sizeof(p_key->data); ++i) {
     p_key->data[i] = 0;
     EEPROM.write(10 + idx + i, 0);
@@ -49,7 +49,7 @@ void _ResetKey(SymKey* p_key, uint8_t idx) {
 }
 
 
-void _StoreSymKey(const SymKey& key, uint8_t idx) {
+void _StoreSymKey(const Crypto::SymKey& key, uint8_t idx) {
   for (uint16_t i = 0; i < sizeof(key.data); ++i) {
     // Permanently store key
     EEPROM.write(10 + idx + i, key.data[i]);
@@ -57,15 +57,15 @@ void _StoreSymKey(const SymKey& key, uint8_t idx) {
 }
 
 
-void _LoadSymKey(SymKey* p_key, uint8_t idx) {
+void _LoadSymKey(Crypto::SymKey* p_key, uint8_t idx) {
   for (uint16_t i = 0; i < sizeof(p_key->data); ++i) {
     p_key->data[i] = EEPROM.read(10 + idx + i);
   }
 }
 
 
-void _CreateSymKey(SymKey* p_key) {
-  SymKey& key = *p_key;
+void _CreateSymKey(Crypto::SymKey* p_key) {
+  auto& key = *p_key;
   uint8_t max_rand_value = 255;
   
   // fill key data with random values between 0 and 255;
@@ -81,28 +81,25 @@ void _CreateSymKey(SymKey* p_key) {
 
 void Crypto::Initialize(bool first_time) {
   Entropy.initialize();
-
   if (first_time) {
     TLOG("New Keys!");
     CreateAndStoreKeys();
   }
-
   LoadKeys();
 }
 
 
-
-const SymKey& Crypto::PassKey() const {
+const Crypto::SymKey& Crypto::PassKey() const {
   return pass_key_;
 }
 
 
-const SymKey& Crypto::CRKey() const {
+const Crypto::SymKey& Crypto::CRKey() const {
   return cr_key_;
 }
 
 
-const SymKey& Crypto::ReqKey() const {
+const Crypto::SymKey& Crypto::ReqKey() const {
   return req_key_;
 }
 
@@ -168,17 +165,17 @@ void FillWithRandom(uint8_t* p_data, uint16_t data_size, const Range& range,
 }
 
 
-void CreateChallenge(Challenge* p_challenge) {
+void CreateChallenge(Crypto::Challenge* p_challenge) {
   uint8_t max_rand_value = 255;
   // fill key data with random values between 0 and 255;
   FillWithRandom(p_challenge->nonce, sizeof(p_challenge->nonce), max_rand_value);
 
   // The generated challenge is now the current challenge for next command.
-  memcpy(&g_current_challenge, p_challenge, sizeof(Challenge));
+  memcpy(&g_current_challenge, p_challenge, sizeof(Crypto::Challenge));
 }
 
 
-bool IsValidSecurityToken(const Command& cmd, const SymKey& cr_key) {
+bool IsValidSecurityToken(const Command& cmd, const Crypto::SymKey& cr_key) {
   uint8_t valid_response[HASH_LENGTH];
 
   _ComputeValidSecToken(cmd, g_current_challenge, cr_key, valid_response);
@@ -190,5 +187,18 @@ bool IsValidSecurityToken(const Command& cmd, const SymKey& cr_key) {
   }
 
   return true;
+}
+
+
+void CreatePassword(Password* p_pass, uint8_t required_pass_size) {
+  const uint8_t exclude[] = {'|', ' ', '\'', '\"', '`'};
+
+  Range ASCII_password_range(32, 126); // see ascii table
+  
+  uint8_t pass_size = min(NbMaxASCIIChar<Password>::value, required_pass_size);
+  memset(p_pass->data, 0, sizeof(Password));
+  
+  FillWithRandom(p_pass->data, pass_size, ASCII_password_range,
+                 &exclude[0], sizeof(exclude));
 }
 

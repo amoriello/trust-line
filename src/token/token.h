@@ -8,6 +8,13 @@
 
 class Token {
  public:
+    // Make it non-copyable
+  Token(const Token&) = delete;
+  Token& operator=(const Token&) = delete;
+
+  Token() {}
+
+ public:
   /*!
    * Initializes the token.
    *
@@ -45,7 +52,7 @@ class Token {
    * ciphered with this key.
    *
    */
-  const SymKey& PassKey() const  {
+  const Crypto::SymKey& PassKey() const  {
     return crypto_.PassKey();
   }
 
@@ -65,7 +72,7 @@ class Token {
    * commputation, then the command is authenticated because only the Token and
    * the paired device knows CRKey.
    */
-  const SymKey& CRKey() const {
+  const Crypto::SymKey& CRKey() const {
     return crypto_.CRKey();
   }
 
@@ -78,7 +85,7 @@ class Token {
    * clear password is securely sent to the device using this key, so the paired
    * device can decipher it.
    */
-  const SymKey& ReqKey() const {
+  const Crypto::SymKey& ReqKey() const {
     return crypto_.ReqKey();
   }
 
@@ -90,10 +97,11 @@ class Token {
    * keys from a previous (broken?) token, using Trustline secret QRCode
    *
    */
-  void StoreKeys(const SymKey& pass_key, const SymKey& cr_key,
-                 const SymKey& req_key) {
+  void StoreKeys(const Crypto::SymKey& pass_key, const Crypto::SymKey& cr_key,
+                 const Crypto::SymKey& req_key) {
     crypto_.StoreKeys(pass_key, cr_key, req_key);
   }
+
 
   /*!
    * Factory reset the Token.

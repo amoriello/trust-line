@@ -52,7 +52,6 @@ THIRD_PARTY_LIB_INCLUDES = \
 
 
 LOCAL_CC_SRCS = \
-	${TOKEN_DIR_SRC}/password.cc                    \
 	${TOKEN_DIR_SRC}/commands.cc                    \
 	${TOKEN_DIR_SRC}/crypto.cc                      \
 	${TOKEN_DIR_SRC}/fake_cxa_guards.cc                      \
@@ -131,7 +130,7 @@ AVRDDUDE          = /usr/local/bin/avrdude
 #CFLAGS_STD        = -std=gnu11
 
 ### CXXFLAGS_STD
-CXXFLAGS_STD      = -std=c++11
+CXXFLAGS_STD      = -std=c++14
 
 ### CPPFLAGS
 ### Flags you might want to set for debugging purpose. Comment to stop.
