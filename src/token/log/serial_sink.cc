@@ -25,7 +25,7 @@ void SerialSink::println(int val, int fmt) {
 
 void SerialSink::println(const char* p_data, unsigned int size, int fmt) {
   for (unsigned int i = 0; i < size; ++i) {
-    Serial.print((byte)p_data[i], DEC);
+    Serial.print((byte)p_data[i], fmt);
     Serial.print(".");
   }
   Serial.println();
