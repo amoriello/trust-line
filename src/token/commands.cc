@@ -177,6 +177,7 @@ void LockComputer(const Command&) {
 //-----------------------------------------------------------------------------
 void TypeString(const Command& cmd) {
   Response resp;
+  UserString u_string;
 
   if (cmd.hdr.arg_size >= 100) {
     resp.hdr.id = respid::kInvalidArgument;
@@ -185,23 +186,16 @@ void TypeString(const Command& cmd) {
     return; 
   }
 
-  char* string = (char*)cmd.arg;
+  Decrypt(cmd.arg, g_token.ComKey(), &u_string);
 
 #ifndef TEST_NO_KEYBOARD
-  Keyboard.print(string);
+  Keyboard.print((char*)u_string.data);
 
-  //length will contains string length + 1
-  uint8_t length = 0;
-  while (string[length++]);
-
-  // Check for additional key
-  if (cmd.hdr.arg_size > length) {
-    uint8_t nbAdditionnalKeyPress = cmd.hdr.arg_size - length;
-    uint8_t beginKeyIndex = cmd.hdr.arg_size - nbAdditionnalKeyPress;
-    for (uint8_t i = 0; i < nbAdditionnalKeyPress; ++i) {
-      Keyboard.press(cmd.arg[beginKeyIndex + i]);
-      Keyboard.releaseAll();
-    }
+  if (cmd.hdr.arg_size > sizeof(UserString)) {
+    auto additional_key_index = sizeof(UserString);
+    auto additional_key = cmd.arg[additional_key_index];
+    Keyboard.press(additional_key);
+    Keyboard.releaseAll();
   }
 #endif  // TEST_NO_KEYBOARD
 
