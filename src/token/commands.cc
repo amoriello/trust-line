@@ -216,6 +216,31 @@ void TypeString(const Command& cmd) {
 
 
 //-----------------------------------------------------------------------------
+void EncryptUserString(const Command& cmd) {
+  Response resp;
+  UserString u_string;
+
+  if (cmd.hdr.arg_size >= 100) {
+    resp.hdr.id = respid::kInvalidArgument;
+    resp.hdr.arg_size = 0;
+    g_chan.WriteResponse(resp);
+    return; 
+  }
+
+  // The clear string is com-protected
+  Decrypt(cmd.arg, g_token.ComKey(), &u_string);
+
+  // Make it token-protected, so that the App cannot decrypt it by itself.
+  auto arg_size = Encrypt(u_string, g_token.PassKey(), &resp.arg[0]);
+
+  // Send the token-protected string to the app, so it can save it on iCloud.
+  resp.hdr.id = respid::kOk;
+  resp.hdr.arg_size = arg_size;
+  g_chan.WriteResponse(resp);
+}
+
+
+//-----------------------------------------------------------------------------
 void ResetKeys(const Command& cmd) {
   Response resp;
   // Version (1 byte) + 3 * 16 byte key
@@ -257,6 +282,7 @@ void RegistrerCommands() {
   g_cmd_registrer[cmdid::kReturnPassword] = &ReturnPassword;
   g_cmd_registrer[cmdid::kLockComputer] = &LockComputer;
   g_cmd_registrer[cmdid::kTypeString] = &TypeString;
+  g_cmd_registrer[cmdid::kEncryptUserString] = &EncryptUserString;
   g_cmd_registrer[cmdid::kResetKeys] = &ResetKeys;
 }
 
