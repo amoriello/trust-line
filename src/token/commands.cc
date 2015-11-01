@@ -186,7 +186,15 @@ void TypeString(const Command& cmd) {
     return; 
   }
 
-  Decrypt(cmd.arg, g_token.ComKey(), &u_string);
+  auto is_token_encrypted = cmd.arg[0];
+
+  if (is_token_encrypted) {
+    // The string was token-protected (e.g login)
+    Decrypt(cmd.arg, g_token.PassKey(), &u_string); 
+  } else {
+    // The string was "only" com-protected
+    Decrypt(cmd.arg, g_token.ComKey(), &u_string);
+  }
 
 #ifndef TEST_NO_KEYBOARD
   Keyboard.print((char*)u_string.data);
