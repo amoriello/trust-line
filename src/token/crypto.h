@@ -43,7 +43,7 @@ class Crypto {
   // The key used to trans-cipher a password, send it back securely
   // to the phone, so that the peer can deciph and see a clear
   // password
-  const Crypto::SymKey& ReqKey() const;
+  const Crypto::SymKey& ComKey() const;
 
   // Stores and reload given symetric keys.
   // This function is used to restore a token
@@ -58,7 +58,7 @@ class Crypto {
   enum key_idx {
     kPassKey = 0,
     kCRKey = 16,
-    kReqKey = 32
+    kComKey = 32
   };
 
 
@@ -70,7 +70,7 @@ private:
 private:
   SymKey pass_key_;
   SymKey cr_key_;
-  SymKey req_key_;
+  SymKey com_key_;
 };
 
 

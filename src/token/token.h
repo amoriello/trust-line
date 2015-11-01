@@ -77,16 +77,15 @@ class Token {
   }
 
   /*!
-   * Get the symmetric key use to cipher a clear password, allowing
-   * the paired device to decipher it.
+   * Get the symmetric key use to cipher a clear password or other strings
+   * allowing the paired device to decipher it.
    *
    * This key is shared by the token and the paired device. It is
-   * used when the paired device wants to get a clear password. The
-   * clear password is securely sent to the device using this key, so the paired
-   * device can decipher it.
+   * used when the paired device wants to get a clear info, or sends clear info.
+   * to the token.
    */
-  const Crypto::SymKey& ReqKey() const {
-    return crypto_.ReqKey();
+  const Crypto::SymKey& ComKey() const {
+    return crypto_.ComKey();
   }
 
 

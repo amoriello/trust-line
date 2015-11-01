@@ -29,7 +29,7 @@ void Pair(const Command&) {
 
   const auto& pass_key = g_token.PassKey();
   const auto& cr_key = g_token.CRKey();
-  const auto& req_key = g_token.ReqKey();
+  const auto& com_key = g_token.ComKey();
 
   resp.hdr.id = respid::kOk;
   uint8_t key_size = sizeof(pass_key.data);
@@ -38,7 +38,7 @@ void Pair(const Command&) {
   for (int i = 0; i < key_size; ++i) {
     resp.arg[i] = pass_key.data[i];
     resp.arg[16 + i] = cr_key.data[i];
-    resp.arg[32 + i] = req_key.data[i];
+    resp.arg[32 + i] = com_key.data[i];
   }
 
   g_chan.WriteResponse(resp);
@@ -151,7 +151,7 @@ void ReturnPassword(const Command& cmd) {
 
   Decrypt(cmd.arg, g_token.PassKey(), &pass);
 
-  auto arg_size = Encrypt(pass, g_token.ReqKey(), resp.arg);
+  auto arg_size = Encrypt(pass, g_token.ComKey(), resp.arg);
 
 
   resp.hdr.id = respid::kOk;
