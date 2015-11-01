@@ -93,4 +93,14 @@ bool IsValidSecurityToken(const Command& cmd, const SymKey& cr_key);
 void FillWithRandom(uint8_t* p_data, uint16_t data_size, const Range& range,
                     const uint8_t* p_exculdes = 0, uint8_t exclude_size = 0);
 
+void CreatePassword(Password* p_pass, uint8_t required_pass_size);
+
+template <class EncryptableData>
+uint8_t Encrypt(const EncryptableData& input, const Crypto::SymKey& sym_key, uint8_t* output);
+
+template <class EncryptableData>
+uint8_t Decrypt(const uint8_t* input, const Crypto::SymKey& sym_key, EncryptableData* ouput);
+
+#include <token/crypto.hxx>
+
 #endif  // SRC_TOKEN_SYMKEY_H_
