@@ -24,7 +24,7 @@ class Crypto {
 
  public:
   struct SymKey {
-    uint8_t data[16];  // 128 bits aes symkey
+    uint8_t data[16];
   };
 
   struct Challenge {
@@ -55,10 +55,11 @@ class Crypto {
   void Reset();
 
  private:
+
   enum key_idx {
     kPassKey = 0,
-    kCRKey = 16,
-    kComKey = 32
+    kCRKey   = kPassKey + sizeof(SymKey::data),
+    kComKey  = kCRKey   + sizeof(SymKey::data),
   };
 
 

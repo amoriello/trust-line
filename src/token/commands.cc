@@ -31,15 +31,16 @@ void Pair(const Command&) {
   const auto& cr_key = g_token.CRKey();
   const auto& com_key = g_token.ComKey();
 
-  resp.hdr.id = respid::kOk;
-  uint8_t key_size = sizeof(pass_key.data);
-  resp.hdr.arg_size = 3 * key_size;
+  const auto key_size = sizeof(Crypto::SymKey::data);
 
   for (int i = 0; i < key_size; ++i) {
     resp.arg[i] = pass_key.data[i];
-    resp.arg[16 + i] = cr_key.data[i];
-    resp.arg[32 + i] = com_key.data[i];
+    resp.arg[key_size + i] = cr_key.data[i];
+    resp.arg[2 * key_size + i] = com_key.data[i];
   }
+
+  resp.hdr.id = respid::kOk;
+  resp.hdr.arg_size = 3 * key_size;
 
   g_chan.WriteResponse(resp);
 }
@@ -253,11 +254,14 @@ void ResetKeys(const Command& cmd) {
 
   //uint8_t version = cmd.arg[0];
 
-  auto p_pass_key = (Crypto::SymKey*)&cmd.arg[1];
-  auto p_cr_key = (Crypto::SymKey*)&cmd.arg[17];
-  auto p_req_key = (Crypto::SymKey*)&cmd.arg[33];
+  const uint8_t key_size = sizeof(Crypto::SymKey::data);
 
-  g_token.StoreKeys(*p_pass_key, *p_cr_key, *p_req_key);
+  // cmd.arg[0] is the version of this keymaterial
+  auto p_pass_key = (Crypto::SymKey*)&cmd.arg[1];
+  auto p_cr_key = (Crypto::SymKey*)&cmd.arg[1 + key_size];
+  auto p_com_key = (Crypto::SymKey*)&cmd.arg[1 + (2 * key_size)];
+
+  g_token.StoreKeys(*p_pass_key, *p_cr_key, *p_com_key);
 
   // The token is now paired
   g_token.Pair();
