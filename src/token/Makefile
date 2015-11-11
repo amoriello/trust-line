@@ -134,7 +134,7 @@ CXXFLAGS_STD      = -std=c++14
 
 ### CPPFLAGS
 ### Flags you might want to set for debugging purpose. Comment to stop.
-CXXFLAGS         = -Wall -Wextra -I../ ${THIRD_PARTY_LIB_INCLUDES} -DTEST_RESET_ON_START
+CXXFLAGS         = -Wall -Wextra -I../ ${THIRD_PARTY_LIB_INCLUDES}
 LDFLAGS 				 =
 
 ### If avr-gcc -v is higher than 4.9, activate coloring of the output
