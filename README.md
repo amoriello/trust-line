@@ -17,6 +17,9 @@ Use different strong passwords for every service and:
 ### Project :
 A "Token" device that generates secure passwords and encrypt them using a 128 bits AES key. The secret key is stored in the token's eeprom memory only.
 
+![Blend Micro](http://static1.squarespace.com/static/5039e08be4b00cf0e8cf88cd/t/5369db8fe4b0968802ea163d/1399446417765/BlendMicro.F%26B.jpg?format=200w)
+
+
 The generated encrypted password is sent to a Master Device (let's say : an iPhone) to be stored (the token does not store the generated password, nor the encrypted version).
 
 - The token knows a secret AES128 symmetric key to encrypt/decrypt passwords.
