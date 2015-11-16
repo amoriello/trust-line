@@ -1030,8 +1030,9 @@ input.text:focus {
 /* home hero specific pages */
 
 .hero-home {
-	background-image: url("../img/bg-default.jpg");
-	background-color: #523129;
+	background-color: #5c6164;
+	background-image: url("../images/tuto-1.jpg");
+	background-position: center right;
 	min-height: 400px;
 }
 
@@ -1045,12 +1046,11 @@ input.text:focus {
 	left: 15px;
 }
 
-
 @media ( min-width: 1200px ) {
 	.hero-home {
 		background-color: #5c6164;
 		/*background-image: url("../img/frame-1.jpg");*/
-		background-image: url("../images/tuto-1.jpg");
+		background-image: url("../images/tuto-1-1.jpg");
 	}
 
 }
@@ -1172,6 +1172,11 @@ input.text:focus {
 .v-center {
 	display: table-cell;
 	vertical-align: middle;
+}
+
+.v-bottom {
+	display: table-cell;
+	vertical-align: bottom;
 }
 
 .fullscreen-video {
