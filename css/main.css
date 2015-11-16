@@ -1,7 +1,6 @@
 @import url(http://fonts.googleapis.com/css?family=Open+Sans:400,300,800,700);
 @import url("normalize.css");
 @import url("grid.css");
-@import url("modal.css");
 
 *,
 *:before,
@@ -1050,7 +1049,8 @@ input.text:focus {
 @media ( min-width: 1200px ) {
 	.hero-home {
 		background-color: #5c6164;
-		background-image: url("../img/frame-1.jpg");
+		/*background-image: url("../img/frame-1.jpg");*/
+		background-image: url("../images/tuto-1.jpg");
 	}
 
 }
@@ -1233,53 +1233,6 @@ input.text:focus {
 		margin: -150px auto 0;
 		background: #000;
 	}
-}
-
-@media ( min-width: 768px ) {
-	.modal-video {
-		position: fixed;
-		top: 0;
-		left: 0;
-		right: 0;
-		height: 100%;
-		z-index: 4;
-		visibility: hidden;
-		opacity: 0;
-		-webkit-transition: visibility .5s, opacity .5s;
-		transition: visibility .5s, opacity .5s;
-	}
-
-	.modal-video.active {
-		opacity: 1;
-		visibility: visible;
-	}
-
-
-	 .modal-video .video-player video {
-		position: absolute;
-		top: 50%;
-		left: 50%;
-		-webkit-transform: translate(-50%,-50%);
-		-moz-transform: translate(-50%,-50%);
-		-ms-transform: translate(-50%,-50%);
-		-o-transform: translate(-50%,-50%);
-		transform: translate(-50%,-50%);
-		margin: auto;
-		min-width: 100%;
-		min-height: 100%;
-	}
-
-}
-
-@media ( min-width: 768px ) and ( max-aspect-ratio: 4/3 ) {
-
-	.modal-video .video-player video {
-		width: 100%;
-		height: auto;
-		min-height: 0;
-		min-width: 0;
-	}
-
 }
 
 .hero-overlay {
