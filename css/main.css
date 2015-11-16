@@ -298,6 +298,12 @@ input.text:focus {
 }
 
 
+#logo {
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+
 
 .heading {
 	white-space: nowrap;
