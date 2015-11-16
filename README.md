@@ -22,6 +22,9 @@ A "Token" device that generates secure passwords and encrypt them using a 128 bi
 
 The generated encrypted password is sent to a Master Device (let's say : an iPhone) to be stored (the token does not store the generated password, nor the encrypted version).
 
+Here's the iPhone App that works as the Master Device: [Trustline-iPhone](https://github.com/amoriello/trust-line-ios)
+
+
 - The token knows a secret AES128 symmetric key to encrypt/decrypt passwords.
 - The iPhone knows a bunch of ciphered passwords that cannot be decrypted without the token.
 
