@@ -25,6 +25,7 @@ struct IsEncryptable {
 
 using UserString = EncryptableData<48>;
 using Password = EncryptableData<64>;
+using Login = UserString;
 
 
 #endif // SRC_TOKEN_ENCRYPTABLE_H_

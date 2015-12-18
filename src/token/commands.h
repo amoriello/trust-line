@@ -84,6 +84,7 @@ enum CommandId {                //
   kTypeString,                  // Yes
   kEncryptUserString,            // Yes
   kResetKeys,                   // Yes if token is paired, no otherwise
+  kReturnLoginKey,
 
   //// TESTONLY ////
   kTestEcho,

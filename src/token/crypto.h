@@ -31,6 +31,8 @@ class Crypto {
     uint8_t nonce[8];  // 64 bits random value
   };
 
+  using EncryptableKey = EncryptableData<sizeof(Crypto::SymKey::data)>;
+
  public:
   void Initialize(bool first_time);
 
@@ -45,11 +47,14 @@ class Crypto {
   // password
   const Crypto::SymKey& ComKey() const;
 
+  // The key used to encrypt login information
+  const Crypto::SymKey& LoginKey() const;
+
   // Stores and reload given symetric keys.
   // This function is used to restore a token
   // using QrCode (@see Command "ResetKey")
   void StoreKeys(const SymKey& pass_key, const SymKey& cr_key,
-                 const SymKey& req_key);
+                 const SymKey& req_key, const SymKey& login_key);
 
 
   void Reset();
@@ -57,9 +62,10 @@ class Crypto {
  private:
 
   enum key_idx {
-    kPassKey = 0,
-    kCRKey   = kPassKey + sizeof(SymKey::data),
-    kComKey  = kCRKey   + sizeof(SymKey::data),
+    kPassKey  = 0,
+    kCRKey    = kPassKey + sizeof(SymKey::data),
+    kComKey   = kCRKey   + sizeof(SymKey::data),
+    kLoginKey = kComKey  + sizeof(SymKey::data)
   };
 
 
@@ -72,6 +78,7 @@ private:
   SymKey pass_key_;
   SymKey cr_key_;
   SymKey com_key_;
+  SymKey login_key_;
 };
 
 

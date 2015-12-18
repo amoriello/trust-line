@@ -104,10 +104,16 @@ const Crypto::SymKey& Crypto::ComKey() const {
 }
 
 
+const Crypto::SymKey& Crypto::LoginKey() const {
+  return login_key_;
+}
+
+
 void Crypto::LoadKeys() {
   _LoadSymKey(&pass_key_, kPassKey);
   _LoadSymKey(&cr_key_, kCRKey);
   _LoadSymKey(&com_key_, kComKey);
+  _LoadSymKey(&login_key_, kLoginKey);
 }
 
 
@@ -115,19 +121,23 @@ void Crypto::CreateAndStoreKeys() {
   _CreateSymKey(&pass_key_);
   _CreateSymKey(&cr_key_);
   _CreateSymKey(&com_key_);
+  _CreateSymKey(&login_key_);
 
   _StoreSymKey(pass_key_, kPassKey);
   _StoreSymKey(cr_key_, kCRKey);
   _StoreSymKey(com_key_, kComKey);
+  _StoreSymKey(login_key_, kLoginKey);
 }
 
 
 void Crypto::StoreKeys(const SymKey& pass_key,
                        const SymKey& cr_key,
-                       const SymKey& com_key) {
+                       const SymKey& com_key,
+                       const SymKey& login_key) {
   _StoreSymKey(pass_key, kPassKey);
   _StoreSymKey(cr_key, kCRKey);
   _StoreSymKey(com_key, kComKey);
+  _StoreSymKey(login_key, kLoginKey);
 
   LoadKeys();
 }
@@ -136,6 +146,7 @@ void Crypto::Reset() {
   _ResetKey(&pass_key_, kPassKey);
   _ResetKey(&cr_key_, kCRKey);
   _ResetKey(&com_key_, kComKey);
+  _ResetKey(&login_key_, kLoginKey);
 }
 
 

@@ -88,6 +88,12 @@ class Token {
     return crypto_.ComKey();
   }
 
+  /*!
+   * Get the symmetric key used to encrypt login information
+   */
+  const Crypto::SymKey& LoginKey() const {
+    return crypto_.LoginKey();
+  }
 
   /*!
    * Store given key and reload them
@@ -97,8 +103,8 @@ class Token {
    *
    */
   void StoreKeys(const Crypto::SymKey& pass_key, const Crypto::SymKey& cr_key,
-                 const Crypto::SymKey& req_key) {
-    crypto_.StoreKeys(pass_key, cr_key, req_key);
+                 const Crypto::SymKey& req_key, const Crypto::SymKey& login_key) {
+    crypto_.StoreKeys(pass_key, cr_key, req_key, login_key);
   }
 
 

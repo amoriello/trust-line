@@ -30,17 +30,19 @@ void Pair(const Command&) {
   const auto& pass_key = g_token.PassKey();
   const auto& cr_key = g_token.CRKey();
   const auto& com_key = g_token.ComKey();
+  const auto& login_key = g_token.LoginKey();
 
   const auto key_size = sizeof(Crypto::SymKey::data);
 
-  for (int i = 0; i < key_size; ++i) {
+  for (uint8_t i = 0; i < key_size; ++i) {
     resp.arg[i] = pass_key.data[i];
-    resp.arg[key_size + i] = cr_key.data[i];
+    resp.arg[1 * key_size + i] = cr_key.data[i];
     resp.arg[2 * key_size + i] = com_key.data[i];
+    resp.arg[3 * key_size + i] = login_key.data[i];
   }
 
   resp.hdr.id = respid::kOk;
-  resp.hdr.arg_size = 3 * key_size;
+  resp.hdr.arg_size = 4 * key_size;
 
   g_chan.WriteResponse(resp);
 }
@@ -260,8 +262,9 @@ void ResetKeys(const Command& cmd) {
   auto p_pass_key = (Crypto::SymKey*)&cmd.arg[1];
   auto p_cr_key = (Crypto::SymKey*)&cmd.arg[1 + key_size];
   auto p_com_key = (Crypto::SymKey*)&cmd.arg[1 + (2 * key_size)];
+  auto p_login_key = (Crypto::SymKey*)&cmd.arg[1 + (3 * key_size)];
 
-  g_token.StoreKeys(*p_pass_key, *p_cr_key, *p_com_key);
+  g_token.StoreKeys(*p_pass_key, *p_cr_key, *p_com_key, *p_login_key);
 
   // The token is now paired
   g_token.Pair();
@@ -272,6 +275,18 @@ void ResetKeys(const Command& cmd) {
   g_chan.WriteResponse(resp);
 }
 
+
+void ReturnLoginKey(const Command&) {
+  Response resp;
+  const Crypto::EncryptableKey& key_to_encrypt = (const Crypto::EncryptableKey&)g_token.LoginKey();
+
+  auto size = Encrypt(key_to_encrypt, g_token.ComKey(), &resp.arg[0]);
+
+  resp.hdr.id = respid::kOk;
+  resp.hdr.arg_size = size;
+
+  g_chan.WriteResponse(resp);
+}
 
 
 namespace /* anonymous */ {
@@ -288,6 +303,7 @@ void RegistrerCommands() {
   g_cmd_registrer[cmdid::kTypeString] = &TypeString;
   g_cmd_registrer[cmdid::kEncryptUserString] = &EncryptUserString;
   g_cmd_registrer[cmdid::kResetKeys] = &ResetKeys;
+  g_cmd_registrer[cmdid::kReturnLoginKey] = &ReturnLoginKey;
 }
 
 
