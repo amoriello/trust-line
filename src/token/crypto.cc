@@ -82,7 +82,6 @@ void _CreateSymKey(Crypto::SymKey* p_key) {
 void Crypto::Initialize(bool first_time) {
   Entropy.initialize();
   if (first_time) {
-    TLOG("New Keys!");
     CreateAndStoreKeys();
   }
   LoadKeys();

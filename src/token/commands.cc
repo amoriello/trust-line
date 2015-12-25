@@ -25,8 +25,6 @@ void Pair(const Command&) {
 
   g_token.Pair();
 
-  TLOG2("Pair");
-
   const auto& pass_key = g_token.PassKey();
   const auto& cr_key = g_token.CRKey();
   const auto& com_key = g_token.ComKey();
@@ -51,8 +49,6 @@ void Pair(const Command&) {
 //-----------------------------------------------------------------------------
 void CreateChallenge(const Command&) {
   Response resp;
-
-  TLOG2("Challenge");
 
   resp.hdr.id = respid::kOk;
   resp.hdr.arg_size = sizeof(Crypto::Challenge);
@@ -82,8 +78,6 @@ void CreatePassword(const Command& cmd) {
   Response resp;
   Password pass;
 
-  TLOG2("CreatePassword");
-
   uint8_t size = cmd.arg[0];
   if (size > NbMaxASCIIChar<Password>::value) {
     resp.hdr.id = respid::kInvalidArgument;
@@ -106,8 +100,6 @@ void CreatePassword(const Command& cmd) {
 //-----------------------------------------------------------------------------
 void TypePassword(const Command& cmd) {
   Response resp;
-
-  TLOG2("TypePassword");
 
   if (cmd.hdr.arg_size < 80 || cmd.hdr.arg_size > 81) {
     resp.hdr.id = respid::kInvalidArgument;
@@ -142,8 +134,6 @@ void TypePassword(const Command& cmd) {
 void ReturnPassword(const Command& cmd) {
   Response resp;
   Password pass;
-
-  TLOG2("ReturnPassword");
 
   if (cmd.hdr.arg_size != 80) {
     resp.hdr.id = respid::kInvalidArgument;

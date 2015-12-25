@@ -33,7 +33,6 @@ void loop() {
   if (g_chan.Available()) {
     TLOG("Command!");
     ExecuteCommand();
-    //TestBleCom();
   }
   g_chan.ProcessEvents();
   delay(100);

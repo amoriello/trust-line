@@ -9,8 +9,6 @@
 
 
 void TestEcho(const Command& cmd) {
-  TLOG("Test Echo");
-
   Response resp;
   
   resp.hdr.id = cmd.hdr.id;
@@ -25,8 +23,6 @@ void TestEcho(const Command& cmd) {
 
 
 void TestPassword(const Command& cmd) {
-  TLOG("Test Password");
-
   Response resp;
   Password pass;
 

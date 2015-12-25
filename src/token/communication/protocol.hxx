@@ -33,34 +33,32 @@ int TokenProtocol<Channel>::ReadCommand(Command* p_cmd, Response* /* p_resp */) 
   WriteContext write_ctx;
   bool done = false;
 
-  TLOG("Read Sec Token");
+  //  Read Sec Token
   done = Read(&read_ctx, p_cmd->sec_token, sizeof(p_cmd->sec_token));
 
+  //  Check succesful security token read
   if (!done) {
-    TLOG("Cannot Read SecToken");
     return false;
   }
 
-  
-  TLOG("Read Hdr");
+  // Read Header  
   done = Read(&read_ctx, (uint8_t*)&p_cmd->hdr, sizeof(p_cmd->hdr));
 
+  //  Check succesful header read
   if (!done) {
-    TLOG("Cannot Read Hdr");
     return false;
   }
 
+  //  Check command id
   if (p_cmd->hdr.id >= cmdid::kNbCmd || p_cmd->hdr.arg_size > sizeof(p_cmd->arg)) {
-    TLOG("BADCMD");
-    return 0;
+    return false;
   }
 
-  TLOG("Read Arg");
-
+  //  Read Command argument
   done = Read(&read_ctx, p_cmd->arg, p_cmd->hdr.arg_size);
-
+    
+  //  Check succesful read of argument
   if (!done) {
-    TLOG("Cannot Read Arg");
     return false;
   }
 
@@ -102,25 +100,17 @@ uint8_t TokenProtocol<Channel>::ReadBufferCtx(ReadContext* p_ctx, uint8_t* p_dat
   while (size > 0) {
     uint8_t bytes_to_read = min(size, kMaxBurst - p_ctx->bytes_read);
     uint8_t brust_read_byte = chan_.readBytes((char*)(p_data + session_bytes_read), bytes_to_read);
-    
-    TLOG("brustRead:");
-    TLOG((const char*)(p_data + session_bytes_read), brust_read_byte, HEX);
-    TLOG("============");
 
     if (brust_read_byte != bytes_to_read) {
       if (brust_read_byte == 0) {
         if (attempt_retry < max_retry) {
-          TLOG("Fail Read... waiting...");
+          //  Fail Read... waiting...
           ++attempt_retry;
           delay(500);
           continue;
         }
       }
-
-      TLOG_("bad read: ");
-      TLOG_(brust_read_byte, DEC);
-      TLOG_(" intead of: ");
-      TLOG(bytes_to_read, DEC);
+      // bad read
       break;
     }
     
@@ -130,7 +120,7 @@ uint8_t TokenProtocol<Channel>::ReadBufferCtx(ReadContext* p_ctx, uint8_t* p_dat
     session_bytes_read += brust_read_byte;
     
     if (p_ctx->bytes_read == kMaxBurst) {
-      TLOG("Read 5, sending ack");
+      //  Read kMaxBurst, sending ack
       //  Ack for partial read with nb bytes read
       uint8_t ack = 0x80 | p_ctx->bytes_read;
       chan_.write(ack);
@@ -151,12 +141,6 @@ uint8_t TokenProtocol<Channel>::WriteBufferCtx(WriteContext* p_ctx, const uint8_
     uint8_t brust_write_bytes = chan_.writeBytes((char*)p_data + session_bytes_sent, bytes_to_write);
 
     if (brust_write_bytes != bytes_to_write) {
-      TLOG("Brust");
-      TLOG(brust_write_bytes, DEC);
-      TLOG("ToWrite:");
-      TLOG(bytes_to_write, DEC);
-
-      TLOG("brust != byte_to_write!!");
       break;
     }
 
@@ -172,20 +156,20 @@ uint8_t TokenProtocol<Channel>::WriteBufferCtx(WriteContext* p_ctx, const uint8_
         uint8_t read_bytes = chan_.readBytes((char*)&ack, sizeof(ack));
 
         if (read_bytes != 0) {
-          TLOG("Read Ack");
+          //  Read Ack
           break;
         }
-        TLOG("+Attempt wait reader");
+        //  Attempt wait
         ++attempt;
         delay(1000);
       }
 
 
       if (ack != p_ctx->bytes_sent) {
-        TLOG("Bad Ack: ");
-        TLOG(ack, DEC);
+        //  Bad Ack
         break;
       }
+
       // reset context for another burst without ack
       p_ctx->bytes_sent = 0;
     }
