@@ -5,9 +5,6 @@ struct Range {
   Range(uint16_t i_begin, uint16_t i_end)
     : begin(i_begin), end(i_end) { }
     
-  Range(uint16_t i_end)
-    : begin(0), end(i_end) { }
-
   uint16_t begin;
   uint16_t end;
 };

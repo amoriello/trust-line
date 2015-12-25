@@ -21,7 +21,7 @@ uint8_t Encrypt(const EncryptableData& input, const Crypto::SymKey& sym_key, uin
   memset(output, 0, (1 + nb_blocks) * block_size);
 
   // Initialize IV with random data
-  FillWithRandom(iv, block_size, 255);
+  FillWithRandom(iv, block_size, Range(0, 255));
 
   // Copy IV to the leading p_data bytes
   memcpy(output, iv, block_size);

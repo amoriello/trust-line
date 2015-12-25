@@ -69,7 +69,7 @@ void _CreateSymKey(Crypto::SymKey* p_key) {
   uint8_t max_rand_value = 255;
   
   // fill key data with random values between 0 and 255;
-  FillWithRandom(key.data, sizeof(key.data), max_rand_value);
+  FillWithRandom(key.data, sizeof(key.data), Range(0, max_rand_value));
 }
 
 }  // anonymous
@@ -179,7 +179,7 @@ void FillWithRandom(uint8_t* p_data, uint16_t data_size, const Range& range,
 void CreateChallenge(Crypto::Challenge* p_challenge) {
   uint8_t max_rand_value = 255;
   // fill key data with random values between 0 and 255;
-  FillWithRandom(p_challenge->nonce, sizeof(p_challenge->nonce), max_rand_value);
+  FillWithRandom(p_challenge->nonce, sizeof(p_challenge->nonce), Range(0, max_rand_value));
 
   // The generated challenge is now the current challenge for next command.
   memcpy(&g_current_challenge, p_challenge, sizeof(Crypto::Challenge));
