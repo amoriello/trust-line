@@ -28,7 +28,7 @@ void TokenProtocol<Channel>::ProcessEvents() {
 
 
 template <class Channel>
-int TokenProtocol<Channel>::ReadCommand(Command* p_cmd, Response* p_resp) {
+int TokenProtocol<Channel>::ReadCommand(Command* p_cmd, Response* /* p_resp */) {
   ReadContext read_ctx;
   WriteContext write_ctx;
   bool done = false;
