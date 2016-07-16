@@ -5,9 +5,10 @@
 
 ### PROJECT_DIR
 ### This is the path to where you have created/cloned your project
-PROJECT_DIR       			= /Users/matt/Projects/trust-line
+#PROJECT_DIR       		= /Users/matt/Projects/trust-line
+PROJECT_DIR       		= ${PWD}/../../
 TOKEN_DIR_SRC       		= ${PROJECT_DIR}/src/token
-THIRD_PARTY_DIR             = ${PROJECT_DIR}/third_party
+THIRD_PARTY_DIR             	= ${PROJECT_DIR}/third_party
 
 ### PROJECT_THIRD_PARTY_DIR
 ### This is the path for third party libraries and others...
@@ -36,7 +37,7 @@ THIRD_PARTY_HID_INC_DIR =				\
 	${THIRD_PARTY_LIB_DIR}/HID/			\
 	-I${THIRD_PARTY_LIB_DIR}/HID/src 	\
 	-I${THIRD_PARTY_LIB_DIR}/HID/src/SingleReport	\
-	-I${THIRD_PARTY_LIB_DIR}/HID/src/MultiReport	
+	-I${THIRD_PARTY_LIB_DIR}/HID/src/MultiReport
 
 
 
@@ -45,7 +46,7 @@ THIRD_PARTY_LIB_INCLUDES = \
 		-I${THIRD_PARTY_LIB_DIR}/AES/ 				\
 		-I${THIRD_PARTY_LIB_DIR}/Entropy/			\
 		-I${THIRD_PARTY_LIB_DIR}/sha256/			\
-		-I${THIRD_PARTY_LIB_DIR}/nRF8001/src/		\
+		-I${THIRD_PARTY_LIB_DIR}/nRF8001/src/			\
 		-I${THIRD_PARTY_BLE_SDK_LIBDIR}/			\
 		-I${THIRD_PARTY_HID_INC_DIR}
 
